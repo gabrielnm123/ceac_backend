@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Sistema para Gestão do Centro Estudantil de Ação Cultural",
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gabrielnm123/SGCEAC.git"
+  },
+  "keywords": [
+    "curso",
+    "educação",
+    "ong",
+    "cadastro"
+  ],
+  "author": "Gabriel Nunes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gabrielnm123/SGCEAC/issues"
+  },
+  "homepage": "https://github.com/gabrielnm123/SGCEAC#readme"
+}
