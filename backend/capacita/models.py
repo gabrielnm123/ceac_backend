@@ -124,23 +124,23 @@ class Ficha(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='usuário')
 
     # Data de criação da ficha
-    data_criacao = models.DateTimeField(auto_now_add=True, verbose_name='data criação')
+    data_criacao = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação da ficha')
 
     def __str__(self) -> str:
         return self.nome_completo
     
-    def formata_data_abertura(self) -> str:
-        return formats.date_format(self.data_abertura, "d/m/Y")
+    # def formata_data_abertura(self) -> str:
+    #     return formats.date_format(self.data_abertura, "d/m/Y")
 
-    def formata_data_nascimento(self) -> str:
-        return formats.date_format(self.data_nascimento, "d/m/Y")
+    # def formata_data_nascimento(self) -> str:
+    #     return formats.date_format(self.data_nascimento, "d/m/Y")
     
-    def formata_data_criacao(self) -> str:
-        return formats.date_format(self.data_criacao, "d/m/Y")
+    # def formata_data_criacao(self) -> str:
+    #     return formats.date_format(self.data_criacao, "d/m/Y")
 
-    def save(self, *args, **kwargs):
-        if self.data_abertura:
-            self.data_abertura = self.formata_data_abertura()
-        self.data_nascimento = self.formata_data_nascimento()
-        self.data_criacao = self.formata_data_criacao()
-        super(Ficha, self).save(*args, **kwargs)
+    # # def save(self, *args, **kwargs):
+    # #     if self.data_abertura:
+    # #         self.data_abertura = self.formata_data_abertura()
+    # #     self.data_nascimento = self.formata_data_nascimento()
+    # #     self.data_criacao = self.formata_data_criacao()
+    # #     super(Ficha, self).save(*args, **kwargs)
