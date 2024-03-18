@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import UserViewSet, GroupViewSet
+from capacita.views import FichaViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
+router.register(r'capacita/fichas', FichaViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
