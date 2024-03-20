@@ -7,8 +7,6 @@ services:
   #   working_dir: /app
   #   volumes:
   #     - ./backend:/app
-  #   # env_file:
-  #   #   - ./backend/.env
   #   entrypoint: bash
   #   command: start.sh
   #   expose:
@@ -25,8 +23,8 @@ services:
 
   db:
     image: mysql
-    # env_file:
-    #   - ./backend/.env
+    env_file:
+      - ./backend/.env
     volumes:
       - /data/db:/var/lib/mysql
     environment:
