@@ -1,13 +1,12 @@
 from django.db import models
-from django.utils import formats
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from django_cpf_cnpj.fields import CNPJField, CPFField
 
 class Ficha(models.Model):
     # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
     nome_completo = models.CharField(max_length=100, verbose_name='NOME COMPLETO:')
-    cpf = CPFField(masked=True, verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
+    cpf_validator = RegexValidator(regex=r'^\d{3}.\d{3}.\d{3}-\d{2}$', message='O formato do CPF deve ser "XXX.XXX.XXX-XX".')
+    cpf = models.CharField(max_length=14,validators=[cpf_validator] ,verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
     genero = models.CharField(max_length=20, choices=(('M', 'Masculino'), ('F', 'Feminino')), verbose_name='GÊNERO:')
     data_nascimento = models.DateField(verbose_name='DATA DE NASCIMENTO:')
     escolaridade = models.CharField(max_length=50, choices=(
@@ -72,7 +71,8 @@ class Ficha(models.Model):
 
     # DADOS PESSOA JURÍDICA
     nome_fantasia = models.CharField(max_length=100, blank=True, null=True, verbose_name='NOME FANTASIA')
-    cnpj = CNPJField(masked=True, blank=True, null=True, verbose_name='CNPJ:')
+    cnpj_validator = RegexValidator(regex=r'^\d{2}.\d{3}.\d{3}/0001-\d{2}$', message='O formato do CNPJ deve ser "XX.XXX.XXX/0001-XX".')
+    cnpj = models.CharField(max_length=18,validators=[cnpj_validator] ,blank=True, null=True, verbose_name='CNPJ:')
     situacao_empresa = models.CharField(max_length=50, blank=True, null=True, choices=(
         ('ativa', 'Ativa'),
         ('n_ativa', 'Não Ativa')
@@ -128,19 +128,3 @@ class Ficha(models.Model):
 
     def __str__(self) -> str:
         return self.nome_completo
-    
-    # def formata_data_abertura(self) -> str:
-    #     return formats.date_format(self.data_abertura, "d/m/Y")
-
-    # def formata_data_nascimento(self) -> str:
-    #     return formats.date_format(self.data_nascimento, "d/m/Y")
-    
-    # def formata_data_criacao(self) -> str:
-    #     return formats.date_format(self.data_criacao, "d/m/Y")
-
-    # # def save(self, *args, **kwargs):
-    # #     if self.data_abertura:
-    # #         self.data_abertura = self.formata_data_abertura()
-    # #     self.data_nascimento = self.formata_data_nascimento()
-    # #     self.data_criacao = self.formata_data_criacao()
-    # #     super(Ficha, self).save(*args, **kwargs)

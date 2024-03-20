@@ -1,6 +1,7 @@
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User, Permission
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import permissions, viewsets
-from .serializers import GroupSerializer, UserSerializer
+from .serializers import GroupSerializer, UserSerializer, PermissionSerializer, ContentTypeSerializer
 from rest_framework_simplejwt import authentication
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,5 +19,17 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.JWTAuthentication]
+
+class PermissionViewSet(viewsets.ModelViewSet):
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [authentication.JWTAuthentication]
+
+class ContentTypeViewSet(viewsets.ModelViewSet):
+    queryset = ContentType.objects.all()
+    serializer_class = ContentTypeSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
