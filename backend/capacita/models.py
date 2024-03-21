@@ -12,7 +12,8 @@ class Ficha(models.Model):
     escolaridade = models.CharField(max_length=50, choices=(
         ('fundamental', 'Ensino Fundamental'),
         ('medio', 'Ensino Médio'),
-        ('graduacao', 'Pós-Graduação')
+        ('graduacao', 'Graduação'),
+        ('pos_graduacao', 'Pós-Graduação')
     ), verbose_name='ESCOLARIDADE:')
     area_atuacao = models.CharField(
     max_length=50,
@@ -96,9 +97,9 @@ class Ficha(models.Model):
     ), verbose_name='TIPO DE VÍNCULO')
 
     # Extra
-    assistir_casa = models.CharField(max_length=1, choices=(
+    assistir_online = models.CharField(max_length=1, choices=(
         ('s', 'SIM'), ('n', 'NÃO')), verbose_name='TEM CONDIÇÕES DE ASSISTIR AULAS ONLINE?')
-    if_true_assistir_casa = models.CharField(max_length=10, choices=(
+    if_true_assistir_casa = models.CharField(max_length=10, blank=True, null=True, choices=(
         ('computador', 'Computador'),
         ('celular', 'Celular'),
         ('tablet', 'Tablet'),
@@ -109,13 +110,13 @@ class Ficha(models.Model):
     modulo_marketing = models.BooleanField(default=False, verbose_name='Marketing (Como dominar o mercado digital)')
     modulo_financeiro = models.BooleanField(default=False, verbose_name='Financeiro (Domine o fluxo de caixa de sua empresa)')
     modulo_planejamento = models.BooleanField(default=False, verbose_name='Planejamento (Modelo de negócio que funciona, aprenda a fazer o seu)')
-    outros = models.BooleanField(default=False, verbose_name='Outros')
+    modulo_outros = models.BooleanField(default=False, verbose_name='Outros')
 
     # Declaração de ciência e autorização
     responsabilizacao = models.BooleanField(default=False, verbose_name='Declaro estar CIENTE de que sou plenamente responsável pela veracidade das informações aqui prestadas, vez que serão comprovadas no início da capacitação, e de que a falsidade das informações acima implicará sanções cabíveis de natureza civil, administrativa e criminal.')
     manejo_dados = models.BooleanField(default=False, verbose_name='Declaro estar CIENTE de que, em razão da parceria com o SEBRAE, a responsabilidade pelo manejo dos dados supra solicitados é compartilhada entre o SEBRAE e a Coordenadoria de Empreendedorismo e Sustentabilidade de Negócios (COESNE), na Secretaria Municipal do Desenvolvimento Econômico (SDE), caso seja verificada a necessidade de alterações.')
     armazenamento_dados = models.BooleanField(default=False, verbose_name='DECLARO estar CIENTE quanto ao armazenamento dos meus dados no banco de cadastro da COESNE e pelo SEBRAE, para a formulação futura de políticas públicas com foco em públicos específicos, e para que EU seja informado(a) sobre a execução de novos projetos pela COESNE, respeitada a confidencialidade dos dados, que somente serão tratados por colaboradores formalmente autorizados no âmbito da SDE.')
-    autoriazacao = models.BooleanField(default=False, verbose_name='AUTORIZO ao SEBRAE o armazenamento e a utilização dos meus dados com a finalidade de oferecer produtos e serviços do seu interesse, realizar pesquisas relacionadas ao seu atendimento, realizar comunicações oficiais pelo SEBRAE ou por nossos prestadores de serviços por meio de diversos canais de comunicação e enriquecer o seu cadastro a partir de base de dados controladas pelo SEBRAE.')
+    autorizacao = models.BooleanField(default=False, verbose_name='AUTORIZO ao SEBRAE o armazenamento e a utilização dos meus dados com a finalidade de oferecer produtos e serviços do seu interesse, realizar pesquisas relacionadas ao seu atendimento, realizar comunicações oficiais pelo SEBRAE ou por nossos prestadores de serviços por meio de diversos canais de comunicação e enriquecer o seu cadastro a partir de base de dados controladas pelo SEBRAE.')
     comunicacao = models.CharField(max_length=1, choices=(
         ('s', 'Sim, eu concordo.'), ('n', 'Nao, eu nao concordo.')
     ), verbose_name='Voce autoriza que as comunicações sejam realizadas por meio de ligação, mensagem instantânea e e-mail?')
