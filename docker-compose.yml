@@ -1,25 +1,37 @@
 version: '3.8'
 
 services:
-  # app:
-  #   build: ./backend
-  #   image: sgceac
-  #   working_dir: /app
-  #   volumes:
-  #     - ./backend:/app
-  #   entrypoint: bash
-  #   command: start.sh
-  #   expose:
-  #     - 8000
-  #   ports:
-  #     - 80:8000
-  #   networks:
-  #     - net
-  #   depends_on:
-  #     - db
-  #   stdin_open: true
-  #   tty: true
-  #   restart: unless-stopped
+  gunicorn:
+    build: ./backend
+    working_dir: /app
+    volumes:
+      - ./backend/staticfiles:/staticfiles
+    entrypoint: bash entrypoint.sh
+    expose:
+      - 8000
+    ports:
+      - 8001:8000
+    networks:
+      - net
+    depends_on:
+      - db
+    # stdin_open: true
+    # tty: true
+    restart: unless-stopped
+
+  nginx:
+    build: ./backend/nginx
+    volumes:
+      - ./backend/staticfiles:/staticfiles
+    # expose:
+    #   - 80
+    ports:
+      - 80:80
+    networks:
+      - net
+    depends_on:
+      - gunicorn
+    restart: unless-stopped
 
   db:
     image: mysql
@@ -32,6 +44,8 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    expose:
+      - 3306
     ports:
       - 3306:3306
     networks:
@@ -44,7 +58,11 @@ services:
       - 8080:8080
     networks:
       - net
+    restart: unless-stopped
 
 networks:
   net:
     driver: bridge
+
+volumes:
+  staticfiles:
