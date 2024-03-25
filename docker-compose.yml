@@ -6,27 +6,27 @@ services:
     working_dir: /app
     volumes:
       - ./backend/staticfiles:/staticfiles
+    environment:
+      - GUNICORN_EXPOSE_PORT=${GUNICORN_EXPOSE_PORT}
     entrypoint: bash entrypoint.sh
     expose:
-      - 8000
-    ports:
-      - 8001:8000
+      - ${GUNICORN_EXPOSE_PORT}
     networks:
       - net
     depends_on:
       - db
-    # stdin_open: true
-    # tty: true
+    stdin_open: true
+    tty: true
     restart: unless-stopped
 
   nginx:
     build: ./backend/nginx
     volumes:
       - ./backend/staticfiles:/staticfiles
-    # expose:
-    #   - 80
+    env_file:
+      - ./backend/.env
     ports:
-      - 80:80
+      - ${NGINX_PORT}:${NGINX_EXPOSE_PORT}
     networks:
       - net
     depends_on:
@@ -34,20 +34,18 @@ services:
     restart: unless-stopped
 
   db:
-    image: mysql
+    image: postgres
     env_file:
       - ./backend/.env
     volumes:
-      - /data/db:/var/lib/mysql
+      - ${DB_VOLUME}:/var/lib/postgresql/data
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - POSTGRES_DB=${DB}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
     expose:
-      - 3306
-    ports:
-      - 3306:3306
+      - ${DB_EXPOSE_PORT}
     networks:
       - net
     restart: unless-stopped
@@ -55,7 +53,7 @@ services:
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - ${ADMINER_PORT}:${ADMINER_EXPOSE_PORT}
     networks:
       - net
     restart: unless-stopped

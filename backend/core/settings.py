@@ -40,17 +40,18 @@ elif DEBUG == 'False':
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
-'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': os.environ.get('MYSQL_DATABASE'),
-    'HOST': os.environ.get('MYSQL_HOST'),
-    'PORT': os.environ.get('MYSQL_PORT'),
-    'USER': os.environ.get('MYSQL_USER'),
-    'PASSWORD': os.environ.get('MYSQL_PASSWORD')
-}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_EXPORT_PORT'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD')
+    }
 }
 
-ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 
 # Application definition
@@ -124,9 +125,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+# LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE')
 
-TIME_ZONE = 'America/Fortaleza'
+# TIME_ZONE = 'America/Fortaleza'
+TIME_ZONE = os.environ.get('TIME_ZONE')
 
 USE_I18N = True
 
@@ -152,10 +155,11 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:9000",
-    "http://127.0.0.1:9000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:9000",
+#     "http://127.0.0.1:9000",
+# ]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
