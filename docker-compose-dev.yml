@@ -13,9 +13,9 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
     expose:
-      - ${DB_EXPOSE_PORT}
+      - 5432
     ports:
-      - ${DB_EXPOSE_PORT}:${DB_EXPOSE_PORT}
+      - 5432:5432
     networks:
       - net
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
   adminer:
     image: adminer
     ports:
-      - ${ADMINER_PORT}:${ADMINER_EXPOSE_PORT}
+      - 8080:${ADMINER_EXPOSE_PORT}
     networks:
       - net
     restart: unless-stopped
