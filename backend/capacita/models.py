@@ -58,7 +58,7 @@ class Ficha(models.Model):
         ('SE', 'Sergipe'),
         ('TO', 'Tocantins'),
     ), verbose_name=' UF:')
-    contato = models.CharField(max_length=20, verbose_name='CONTATO:')
+    contato = models.CharField(max_length=11, verbose_name='CONTATO:')
     email = models.EmailField(max_length=254, verbose_name='E-MAIL:')
     interesse_ter_negocio = models.CharField(max_length=1, choices=(
         ('s', 'SIM'), ('n', 'NÃO')
