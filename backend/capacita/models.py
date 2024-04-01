@@ -131,3 +131,7 @@ class Ficha(models.Model):
         self.clean_list(
             ('cpf', 'cep', 'cnpj', 'cnae_principal')
         )
+
+    def save(self, *args, **kwargs) -> None:
+        self.nome_completo = self.nome_completo.upper()
+        super().save(*args, **kwargs)
