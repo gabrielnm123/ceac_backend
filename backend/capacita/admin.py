@@ -11,7 +11,7 @@ class FichaAdmin(admin.ModelAdmin):
     search_fields = ['nome_completo', 'cpf']
     list_display = ('nome_completo', 'cpf')
     actions = ['download_ficha']
-    document = DocxTemplate('backend/capacita/doc/ficha.docx')
+    document = DocxTemplate('staticfiles/ficha.docx')
     context = dict()
 
     def trata_ficha(self, ficha):
