@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 class Ficha(models.Model):
     # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
     nome_completo = models.CharField(max_length=100, verbose_name='NOME COMPLETO:')
-    # cpf_validator = RegexValidator(regex=r'^\d{3}.\d{3}.\d{3}-\d{2}$', message='O formato do CPF deve ser "XXX.XXX.XXX-XX".')
     cpf = models.CharField(max_length=11, verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
     genero = models.CharField(max_length=20, choices=(('M', 'Masculino'), ('F', 'Feminino')), verbose_name='GÊNERO:')
     data_nascimento = models.DateField(verbose_name='DATA DE NASCIMENTO:')
@@ -29,7 +28,6 @@ class Ficha(models.Model):
     endereco = models.CharField(max_length=100, verbose_name='ENDEREÇO RESIDENCIAL:')
     complemento = models.CharField(max_length=100, blank=True, null=True, verbose_name='COMPLEMENTO:')
     bairro = models.CharField(max_length=100, verbose_name='BAIRRO:')
-    # cep_validator = RegexValidator(regex=r'^\d{5}-\d{3}$', message='O formato do CEP deve ser "XXXXX-XXX".')
     cep = models.CharField(max_length=8, verbose_name='CEP:')
     uf = models.CharField(max_length=2, choices=(
         ('AC', 'Acre'),
@@ -68,10 +66,17 @@ class Ficha(models.Model):
 
     preferencia_aula = models.CharField(max_length=20, choices=(('online', 'Online'), ('presencial', 'Presencial')), verbose_name='VOCÊ PREFERE ASSISTIR AULAS ONLINE OU PRESENCIAIS?')
     meio_comunicacao_aula = models.CharField(max_length=20, choices=(('whatsapp', 'WhatsApp'), ('email', 'Email')), verbose_name='VOCÊ GOSTARIA QUE ENVIÁSSEMOS O LINK PARA AS AULAS POR?')
+    assistir_online = models.CharField(max_length=1, choices=(
+        ('s', 'SIM'), ('n', 'NÃO')), verbose_name='TEM CONDIÇÕES DE ASSISTIR AULAS ONLINE?')
+    if_true_assistir_casa = models.CharField(max_length=10, blank=True, null=True, choices=(
+        ('computador', 'Computador'),
+        ('celular', 'Celular'),
+        ('tablet', 'Tablet'),
+        ('outro', 'Outro')
+    ), verbose_name='SE VOCÊ RESPONDEU “SIM” À PERGUNTA ANTERIOR, POR ONDE VOCÊ ASSISTIRIA ÀS AULAS ONLINE?')
 
     # DADOS PESSOA JURÍDICA
     nome_fantasia = models.CharField(max_length=100, blank=True, null=True, verbose_name='NOME FANTASIA')
-    # cnpj_validator = RegexValidator(regex=r'^\d{2}.\d{3}.\d{3}/0001-\d{2}$', message='O formato do CNPJ deve ser "XX.XXX.XXX/0001-XX".')
     cnpj = models.CharField(max_length=14, blank=True, null=True, verbose_name='CNPJ:')
     situacao_empresa = models.CharField(max_length=50, blank=True, null=True, choices=(
         ('ativa', 'Ativa'),
@@ -82,7 +87,6 @@ class Ficha(models.Model):
         ('ME', 'Microempresa (ME)')
     ), verbose_name='PORTE:')
     data_abertura = models.DateField(blank=True, null=True, verbose_name='DATA ABERTURA:')
-    # cnae_validator = RegexValidator(regex=r'^\d{4}-\d{1}/\d{2}$', message='O formato do CNAE deve ser "XXXX-X/XX".')
     cnae_principal = models.CharField(max_length=7, blank=True, null=True, verbose_name='CNAE PRINCIPAL (Classificação Nacional de Atividades  Econômicas):')
     setor = models.CharField(max_length=50, blank=True, null=True, choices=(
         ('comercio', 'Comércio'),
@@ -96,14 +100,6 @@ class Ficha(models.Model):
     ), verbose_name='TIPO DE VÍNCULO')
 
     # Extra
-    assistir_online = models.CharField(max_length=1, choices=(
-        ('s', 'SIM'), ('n', 'NÃO')), verbose_name='TEM CONDIÇÕES DE ASSISTIR AULAS ONLINE?')
-    if_true_assistir_casa = models.CharField(max_length=10, blank=True, null=True, choices=(
-        ('computador', 'Computador'),
-        ('celular', 'Celular'),
-        ('tablet', 'Tablet'),
-        ('outro', 'Outro')
-    ), verbose_name='SE VOCÊ RESPONDEU “SIM” À PERGUNTA ANTERIOR, POR ONDE VOCÊ ASSISTIRIA ÀS AULAS ONLINE?')
 
     # Módulos de Capacitação
     modulo_marketing = models.BooleanField(default=False, verbose_name='Marketing (Como dominar o mercado digital)')
