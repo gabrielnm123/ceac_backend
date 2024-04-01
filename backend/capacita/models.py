@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 
 class Ficha(models.Model):
     # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
     nome_completo = models.CharField(max_length=100, verbose_name='NOME COMPLETO:')
-    cpf_validator = RegexValidator(regex=r'^\d{3}.\d{3}.\d{3}-\d{2}$', message='O formato do CPF deve ser "XXX.XXX.XXX-XX".')
-    cpf = models.CharField(max_length=14,validators=[cpf_validator] ,verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
+    # cpf_validator = RegexValidator(regex=r'^\d{3}.\d{3}.\d{3}-\d{2}$', message='O formato do CPF deve ser "XXX.XXX.XXX-XX".')
+    cpf = models.CharField(max_length=11, verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
     genero = models.CharField(max_length=20, choices=(('M', 'Masculino'), ('F', 'Feminino')), verbose_name='GÊNERO:')
     data_nascimento = models.DateField(verbose_name='DATA DE NASCIMENTO:')
     escolaridade = models.CharField(max_length=50, choices=(
@@ -30,8 +29,8 @@ class Ficha(models.Model):
     endereco = models.CharField(max_length=100, verbose_name='ENDEREÇO RESIDENCIAL:')
     complemento = models.CharField(max_length=100, blank=True, null=True, verbose_name='COMPLEMENTO:')
     bairro = models.CharField(max_length=100, verbose_name='BAIRRO:')
-    cep_validator = RegexValidator(regex=r'^\d{5}-\d{3}$', message='O formato do CEP deve ser "XXXXX-XXX".')
-    cep = models.CharField(max_length=9, validators=[cep_validator], verbose_name='CEP:')
+    # cep_validator = RegexValidator(regex=r'^\d{5}-\d{3}$', message='O formato do CEP deve ser "XXXXX-XXX".')
+    cep = models.CharField(max_length=8, verbose_name='CEP:')
     uf = models.CharField(max_length=2, choices=(
         ('AC', 'Acre'),
         ('AL', 'Alagoas'),
@@ -72,8 +71,8 @@ class Ficha(models.Model):
 
     # DADOS PESSOA JURÍDICA
     nome_fantasia = models.CharField(max_length=100, blank=True, null=True, verbose_name='NOME FANTASIA')
-    cnpj_validator = RegexValidator(regex=r'^\d{2}.\d{3}.\d{3}/0001-\d{2}$', message='O formato do CNPJ deve ser "XX.XXX.XXX/0001-XX".')
-    cnpj = models.CharField(max_length=18,validators=[cnpj_validator] ,blank=True, null=True, verbose_name='CNPJ:')
+    # cnpj_validator = RegexValidator(regex=r'^\d{2}.\d{3}.\d{3}/0001-\d{2}$', message='O formato do CNPJ deve ser "XX.XXX.XXX/0001-XX".')
+    cnpj = models.CharField(max_length=14, blank=True, null=True, verbose_name='CNPJ:')
     situacao_empresa = models.CharField(max_length=50, blank=True, null=True, choices=(
         ('ativa', 'Ativa'),
         ('n_ativa', 'Não Ativa')
@@ -83,8 +82,8 @@ class Ficha(models.Model):
         ('ME', 'Microempresa (ME)')
     ), verbose_name='PORTE:')
     data_abertura = models.DateField(blank=True, null=True, verbose_name='DATA ABERTURA:')
-    cnae_validator = RegexValidator(regex=r'^\d{4}-\d{1}/\d{2}$', message='O formato do CNAE deve ser "XXXX-X/XX".')
-    cnae_principal = models.CharField(max_length=9, blank=True, null=True, validators=[cnae_validator], verbose_name='CNAE PRINCIPAL (Classificação Nacional de Atividades  Econômicas):')
+    # cnae_validator = RegexValidator(regex=r'^\d{4}-\d{1}/\d{2}$', message='O formato do CNAE deve ser "XXXX-X/XX".')
+    cnae_principal = models.CharField(max_length=7, blank=True, null=True, verbose_name='CNAE PRINCIPAL (Classificação Nacional de Atividades  Econômicas):')
     setor = models.CharField(max_length=50, blank=True, null=True, choices=(
         ('comercio', 'Comércio'),
         ('servico', 'Serviço'),
@@ -118,14 +117,21 @@ class Ficha(models.Model):
     armazenamento_dados = models.BooleanField(default=False, verbose_name='DECLARO estar CIENTE quanto ao armazenamento dos meus dados no banco de cadastro da COESNE e pelo SEBRAE, para a formulação futura de políticas públicas com foco em públicos específicos, e para que EU seja informado(a) sobre a execução de novos projetos pela COESNE, respeitada a confidencialidade dos dados, que somente serão tratados por colaboradores formalmente autorizados no âmbito da SDE.')
     autorizacao = models.BooleanField(default=False, verbose_name='AUTORIZO ao SEBRAE o armazenamento e a utilização dos meus dados com a finalidade de oferecer produtos e serviços do seu interesse, realizar pesquisas relacionadas ao seu atendimento, realizar comunicações oficiais pelo SEBRAE ou por nossos prestadores de serviços por meio de diversos canais de comunicação e enriquecer o seu cadastro a partir de base de dados controladas pelo SEBRAE.')
     comunicacao = models.CharField(max_length=1, choices=(
-        ('s', 'Sim, eu concordo.'), ('n', 'Nao, eu nao concordo.')
-    ), verbose_name='Voce autoriza que as comunicações sejam realizadas por meio de ligação, mensagem instantânea e e-mail?')
-
-    # Usuário que preencheu a inscrição
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='usuário')
+        ('s', 'Sim, eu concordo.'), ('n', 'Não, eu não concordo.')
+    ), verbose_name='Você autoriza que as comunicações sejam realizadas por meio de ligação, mensagem instantânea e e-mail?')
 
     # Data de criação da ficha
     data_criacao = models.DateTimeField(auto_now_add=True, verbose_name='Data de criação da ficha')
 
     def __str__(self) -> str:
         return self.nome_completo
+    
+    def clean_list(self, fields: list) -> None:
+        for field in fields:
+            if getattr(self, field) and not str(getattr(self, field)).isnumeric():
+                raise ValidationError({field: 'Deve conter somente números!'})
+
+    def clean(self):
+        self.clean_list(
+            ('cpf', 'cep', 'cnpj', 'cnae_principal')
+        )
