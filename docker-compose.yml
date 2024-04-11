@@ -44,8 +44,6 @@ services:
 
   adminer:
     image: adminer
-    env_file:
-      - ./backend/.env
     ports:
       - 8080:${ADMINER_EXPOSE_PORT}
     networks:
