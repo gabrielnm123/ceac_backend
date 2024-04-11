@@ -4,7 +4,7 @@ services:
   db:
     image: postgres
     volumes:
-      - /data/sgceac:/var/lib/postgresql/data
+      - /data/sgceac_dev:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: sgceac
       POSTGRES_USER: admin

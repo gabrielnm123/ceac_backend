@@ -5,7 +5,7 @@ services:
     build: ./backend
     working_dir: /app
     volumes:
-      - ./backend/staticfiles:/staticfiles
+      - staticfiles:/staticfiles
     entrypoint: bash entrypoint.sh
     expose:
       - 8000
@@ -20,7 +20,7 @@ services:
   nginx:
     build: ./backend/nginx
     volumes:
-      - ./backend/staticfiles:/staticfiles
+      - staticfiles:/staticfiles
     ports:
       - 80:80
       - 443:443
@@ -45,7 +45,7 @@ services:
   adminer:
     image: adminer
     ports:
-      - 8080:${ADMINER_EXPOSE_PORT}
+      - 8080:8080
     networks:
       - net
     restart: unless-stopped
