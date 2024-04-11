@@ -8,10 +8,10 @@ services:
     volumes:
       - ${DB_VOLUME}:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${DB}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - POSTGRES_DB=sgceac
+      - POSTIGRES_HOST=db
+      - POSTGRES_PASSWORD='$$z$_xs-!@*wyq6&ewf38rtjl#!5-obs*8mtdrpov%zq$_91w6'
+      - POSTGRES_ROOT_PASSWORD='2vb&voihgu*9+0m#6(tyzkkm+vi=_s!_d-^osug5*2a%2o(+5)'
     expose:
       - 5432
     ports:
