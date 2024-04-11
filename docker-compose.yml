@@ -5,7 +5,7 @@ services:
     build: ./backend
     working_dir: /app
     volumes:
-      - staticfiles:/staticfiles
+      - static:/static
     entrypoint: bash entrypoint.sh
     expose:
       - 8000
@@ -20,7 +20,7 @@ services:
   nginx:
     build: ./backend/nginx
     volumes:
-      - staticfiles:/staticfiles
+      - static:/static
     ports:
       - 80:80
       - 443:443
@@ -55,4 +55,4 @@ networks:
     driver: bridge
 
 volumes:
-  staticfiles:
+  static:
