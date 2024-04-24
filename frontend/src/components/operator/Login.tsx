@@ -1,18 +1,27 @@
 import React from "react";
-import { Space } from "antd";
-import { Button } from "antd";
+import { Form, Input, Button } from 'antd';
 
 function Login() {
   return (
-    <>
-      <Space>
-        <Button>ola</Button>
-        <Button>ola</Button>
-        <Button>ola</Button>
-        <Button>ola</Button>
-        <Button>ola</Button>
-      </Space>
-    </>
+    <Form>
+      <Form.Item
+        name="username"
+        rules={[{ required: true, message: 'Insira seu nome de usuário!' }]}
+      >
+        <Input placeholder="Nome de usuário" />
+      </Form.Item>
+      <Form.Item
+        name="password"
+        rules={[{ required: true, message: 'Insira sua senha!' }]}
+      >
+        <Input.Password placeholder="Senha" />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Entrar
+        </Button>
+      </Form.Item>
+    </Form>
   )
 }
 
