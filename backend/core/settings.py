@@ -25,10 +25,10 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'o==5e^esun8)xwh1*8dog(o!0!v+dfsme8d+1#sj=qeakrq62m')
+SECRET_KEY = os.getenv('SECRET_KEY', 'o==5e^esun8)xwh1*8dog(o!0!v+dfsme8d+1#sj=qeakrq62m')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True')
+DEBUG = os.getenv('DEBUG', 'True')
 if DEBUG == 'True':
     DEBUG = True
 elif DEBUG == 'False':
@@ -42,20 +42,20 @@ elif DEBUG == 'False':
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'sgceac'),
-        'HOST': os.environ.get('POSTIGRES_HOST', '0.0.0.0'),
+        'NAME': os.getenv('POSTGRES_DB', 'sgceac'),
+        'HOST': os.getenv('POSTIGRES_HOST', '0.0.0.0'),
         'PORT': 5432,
-        'USER': os.environ.get('POSTGRES_USER', 'admin'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'z_xs-!@*wyq6&ewf38rtjl#!5-obs*8mtdrpov%zq_91w6')
+        'USER': os.getenv('POSTGRES_USER', 'admin'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'z_xs-!@*wyq6&ewf38rtjl#!5-obs*8mtdrpov%zq_91w6')
     }
 }
 
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')  
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')  
 
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:8002').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8002').split(',')
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:9000,http://127.0.0.1:9000').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:9000,http://127.0.0.1:9000').split(',')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -138,10 +138,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 # LANGUAGE_CODE = 'pt-br'
-LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'pt-br')
+LANGUAGE_CODE = os.getenv('LANGUAGE_CODE', 'pt-br')
 
 # TIME_ZONE = 'America/Fortaleza'
-TIME_ZONE = os.environ.get('TIME_ZONE', 'America/Fortaleza')
+TIME_ZONE = os.getenv('TIME_ZONE', 'America/Fortaleza')
 
 USE_I18N = True
 
