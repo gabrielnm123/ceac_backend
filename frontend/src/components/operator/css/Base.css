@@ -12,8 +12,9 @@
 }
 
 .content-base {
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
+
   padding: 0 48px;
 }
 
@@ -22,7 +23,10 @@
 }
 
 .content-div1-base {
+  display: flex;
+  align-self: center;
   padding: 24px;
+  min-width: 25%;
 }
 
 .footer-base {
