@@ -50,7 +50,7 @@ const Base: React.FC<BaseProps> = (props) => {
         </div>
       </Content>
       <Footer className='footer-base'>
-        Ant Design ©2024 Created by Gabriel Nunes
+        ©2024 Criado por Gabriel Nunes
       </Footer>
     </Layout>
   );
