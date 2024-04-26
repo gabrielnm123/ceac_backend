@@ -9,12 +9,25 @@
 .header-base {  
   display: flex;
   align-items: center;
+  background-color: #0051ac;
+  min-height: 85px;
+}
+
+.logo-base {
+  width: auto;
+  height: 75px;
+}
+
+.menu-base {
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
+  background-color: #0051ac;
 }
 
 .content-base {
   display: flex;
   flex-direction: column;
-
   padding: 0 48px;
 }
 

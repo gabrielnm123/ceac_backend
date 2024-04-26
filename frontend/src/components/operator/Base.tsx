@@ -1,17 +1,28 @@
 import React from 'react';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import './css/Base.css'
+import Logo from '../img/ceac.png'
+import type { MenuProps } from 'antd'
+import { Breadcrumb, Layout, Menu, theme, Dropdown, Space } from 'antd';
 
 const { Header, Content, Footer } = Layout;
 
-const items = new Array(15).fill(null).map((_, index) => ({
-  key: index + 1,
-  label: `nav ${index + 1}`,
-}));
+interface MenuItemType {
+  key: number;
+  label: string;
+};
 
-type BaseProps = {
+interface ItemType extends MenuItemType {};
+
+interface BreadcrumbItemType {
+  title: string;
+}
+
+interface Partial extends BreadcrumbItemType {}
+
+interface BaseProps {
   content: React.ReactNode;
-  pages: Array<String>;
+  link: Array<Partial>;
+  menuItems: Array<ItemType>;
 };
 
 const Base: React.FC<BaseProps> = (props) => {
@@ -22,23 +33,18 @@ const Base: React.FC<BaseProps> = (props) => {
   return (
     <Layout className='layout-base'>
       <Header className='header-base'>
-        <div className="demo-logo" />
-        <Menu
+        <img src={Logo} alt="logo" className='logo-base'/>
+        <Menu className='menu-base'
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['2']}
-          items={items}
-          style={{ flex: 1, minWidth: 0 }}
+          items={props.menuItems}
         />
       </Header>
       <Content className='content-base'>
-        <Breadcrumb className='content-breadcrumb-base'>
-          { props.pages.map((page, index) => (
-            <Breadcrumb.Item key={index}>
-              {page}
-            </Breadcrumb.Item>
-          )) }
-        </Breadcrumb>
+        <Breadcrumb
+          items={props.link}
+        />
         <div
           style={{
             background: colorBgContainer,
@@ -46,7 +52,7 @@ const Base: React.FC<BaseProps> = (props) => {
           }}
           className='content-div1-base'
         >
-          { props.content }
+          {props.content ? props.content : null}
         </div>
       </Content>
       <Footer className='footer-base'>

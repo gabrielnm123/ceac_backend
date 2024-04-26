@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Input, Button } from 'antd';
 import './css/Login.css'
 
-function Login() {
+const Login: React.FC = () => {
   return (
     <Form className="form-login">
       <Form.Item
