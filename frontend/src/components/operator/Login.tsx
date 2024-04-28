@@ -28,4 +28,6 @@ const Login: React.FC = () => {
   )
 }
 
-export default Login
+const breadcrumbItemLogin = ['Login']
+
+export { Login, breadcrumbItemLogin }
