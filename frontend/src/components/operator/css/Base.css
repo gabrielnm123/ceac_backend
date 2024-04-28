@@ -9,7 +9,7 @@
 .header-base {  
   display: flex;
   align-items: center;
-  background-color: #0051ac;
+  background-color: #1677ff;
   min-height: 85px;
 }
 
@@ -22,7 +22,10 @@
   flex: 1;
   flex-wrap: wrap;
   min-width: 0;
-  background-color: #0051ac;
+}
+
+.ant-menu {
+  background-color: #1677ff !important;
 }
 
 .content-base {
