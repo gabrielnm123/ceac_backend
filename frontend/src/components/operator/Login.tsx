@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button } from 'antd';
 import './css/Login.css'
 
 const Login: React.FC = () => {
+  useEffect(() => {
+    document.title = 'Autenticação';
+  })
+
   return (
     <Form className="form-login">
       <Form.Item
@@ -28,6 +32,6 @@ const Login: React.FC = () => {
   )
 }
 
-const breadcrumbItemLogin = ['Login']
+const breadcrumbItemLogin = ['Autenticação']
 
 export { Login, breadcrumbItemLogin }

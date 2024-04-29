@@ -4,9 +4,9 @@ import Logo from '../img/ceac.png'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import type { BaseProps } from './types/MenuItem';
 
-const { Header, Content, Footer } = Layout;
-
 const Base: React.FC<BaseProps> = (props) => {
+  const { Header, Content, Footer } = Layout;
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -34,7 +34,7 @@ const Base: React.FC<BaseProps> = (props) => {
           }}
           className='content-div1-base'
         >
-          {props.content ? props.content : null}
+          {props.content}
         </div>
       </Content>
       <Footer className='footer-base'>
