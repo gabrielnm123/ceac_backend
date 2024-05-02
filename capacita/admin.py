@@ -9,21 +9,7 @@ from django.db import models
 import os
 
 class FichaAdmin(admin.ModelAdmin):
-    search_fields = ['nome_completo', 'cpf']
-    list_display = ('nome_completo', 'cpf')
-    actions = ['download_ficha']
-    production = 'capacita/doc/ficha.docx'
-    is_production = os.path.isfile(production)
-    dev = 'backend/capacita/doc/ficha.docx'
-    is_dev = os.path.isfile(dev)
     context = dict()
-
-    def __init__(self, model: type, admin_site: admin.AdminSite | None) -> None:
-        if self.is_production:
-            self.document = DocxTemplate(self.production)
-        elif self.is_dev:
-            self.document = DocxTemplate(self.dev)
-        super().__init__(model, admin_site)
 
     def trata_ficha(self, ficha):
         for field in Ficha._meta.fields:

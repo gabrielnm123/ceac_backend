@@ -6,7 +6,7 @@ services:
     volumes:
       - /data/sgceac_dev:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: sgceac
+      POSTGRES_DB: ceac
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: z_xs-!@*wyq6&ewf38rtjl#!5-obs*8mtdrpov%zq_91w6
       POSTGRES_ROOT_PASSWORD: 2vb&voihgu*9+0m#6(tyzkkm+vi=_s!_d-^osug5*2a%2o(+5)
@@ -15,7 +15,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      - net
+      - net-dev
     restart: unless-stopped
 
   adminer:
@@ -23,9 +23,9 @@ services:
     ports:
       - 8080:8080 
     networks:
-      - net
+      - net-dev
     restart: unless-stopped
 
 networks:
-  net:
+  net-dev:
     driver: bridge

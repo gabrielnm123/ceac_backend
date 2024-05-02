@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   gunicorn:
-    build: ./backend
+    build: .
+    env_file:
+      - ./.env
     working_dir: /app
     volumes:
       - static:/static
@@ -18,7 +20,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    build: ./backend/nginx
+    build: ./nginx
     volumes:
       - static:/static
     ports:
@@ -33,7 +35,7 @@ services:
   db:
     image: postgres
     env_file:
-      - ./backend/.env
+      - ./.env
     volumes:
       - /data/sgceac:/var/lib/postgresql/data
     expose:

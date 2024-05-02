@@ -42,7 +42,7 @@ elif DEBUG == 'False':
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'sgceac'),
+        'NAME': os.getenv('POSTGRES_DB', 'ceac'),
         'HOST': os.getenv('POSTIGRES_HOST', '0.0.0.0'),
         'PORT': 5432,
         'USER': os.getenv('POSTGRES_USER', 'admin'),
