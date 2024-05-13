@@ -3,6 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import permissions, viewsets
 from .serializers import GroupSerializer, UserSerializer, PermissionSerializer, ContentTypeSerializer
 from rest_framework_simplejwt import authentication
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -33,3 +35,10 @@ class ContentTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ContentTypeSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([authentication.JWTAuthentication])
+def get_current_user(request):
+    user = request.user
+    return Response({'username': user.username})

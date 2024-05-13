@@ -137,8 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-# LANGUAGE_CODE = 'pt-br'
-LANGUAGE_CODE = os.getenv('LANGUAGE_CODE', 'pt-br')
+LANGUAGE_CODE = 'pt-br'
 
 # TIME_ZONE = 'America/Fortaleza'
 TIME_ZONE = os.getenv('TIME_ZONE', 'America/Fortaleza')
