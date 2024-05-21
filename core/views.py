@@ -41,4 +41,4 @@ class ContentTypeViewSet(viewsets.ModelViewSet):
 @authentication_classes([authentication.JWTAuthentication])
 def get_current_user(request):
     user = request.user
-    return Response({'username': user.username})
+    return Response({'id': user.id})
