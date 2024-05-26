@@ -1,6 +1,17 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
+class Atividade(models.Model):
+    atividade = models.CharField(max_length=100, verbose_name='ATIVIDADES DISPONÍVEIS:')
+    disponivel = models.BooleanField(default=True, verbose_name='ESSA ATIVIDADE ESTÁ DIPONÍVEL')
+    
+    def __str__(self) -> str:
+        return self.atividade
+    
+    def save(self, *args, **kwargs) -> None:
+        self.atividade = self.atividade.strip()
+        return super().save(*args, **kwargs)
+
 class Ficha(models.Model):
     # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
     nome_completo = models.CharField(max_length=100, verbose_name='NOME COMPLETO:')
@@ -13,18 +24,7 @@ class Ficha(models.Model):
         ('graduacao', 'Graduação'),
         ('pos_graduacao', 'Pós-Graduação')
     ), verbose_name='ESCOLARIDADE:')
-    area_atuacao = models.CharField(
-    max_length=50,
-    choices=(
-        ('artesanato', 'Artesanato'),
-        ('agricultura', 'Agricultura Urbana'),
-        ('comercio', 'Comércio'),
-        ('estetica', 'Estética e Beleza'),
-        ('gastronomia', 'Gastronomia'),
-        ('industria', 'Indústria'),
-        ('servico', 'Serviço'),
-    ), verbose_name='ATIVIDADE QUE ATUA OU DESEJA ATUAR:'
-    )
+    atividade = models.ForeignKey(Atividade, on_delete=models.PROTECT, verbose_name='ATIVIDADE QUE ATUA OU DESEJA ATUAR:')
     endereco = models.CharField(max_length=100, verbose_name='ENDEREÇO RESIDENCIAL:')
     complemento = models.CharField(max_length=100, blank=True, null=True, verbose_name='COMPLEMENTO:')
     bairro = models.CharField(max_length=100, verbose_name='BAIRRO:')

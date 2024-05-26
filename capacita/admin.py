@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Ficha
+from .models import Ficha, Atividade
 from django.http import HttpResponse
-from docxtpl import DocxTemplate
 import zipfile
 import os
 import tempfile
@@ -67,3 +66,4 @@ class FichaAdmin(admin.ModelAdmin):
     download_ficha.short_description = "Baixar ficha(s) selecionada(s)"
 
 admin.site.register(Ficha, FichaAdmin)
+admin.site.register(Atividade)
