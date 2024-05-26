@@ -1,5 +1,5 @@
 services:
-  db:
+  db-dev:
     image: postgres
     volumes:
       - /data/ceac_backend_dev:/var/lib/postgresql/data
@@ -16,7 +16,7 @@ services:
       - net-dev
     restart: unless-stopped
 
-  adminer:
+  adminer-dev:
     image: adminer
     ports:
       - 8080:8080 
