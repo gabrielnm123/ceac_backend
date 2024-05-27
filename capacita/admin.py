@@ -5,9 +5,9 @@ import zipfile
 import os
 import tempfile
 from django.db import models
-import os
 
 class FichaAdmin(admin.ModelAdmin):
+    actions = ['download_ficha']
     context = dict()
 
     def trata_ficha(self, ficha):
