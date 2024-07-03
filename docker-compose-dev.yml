@@ -2,7 +2,7 @@ services:
   db-dev:
     image: postgres
     volumes:
-      - ./data-dev:/var/lib/postgresql/data
+      - data-dev:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ceac
       POSTGRES_USER: admin
@@ -27,3 +27,6 @@ services:
 networks:
   net-dev:
     driver: bridge
+
+volumes:
+  data-dev:
