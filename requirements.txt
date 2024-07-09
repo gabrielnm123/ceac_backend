@@ -4,6 +4,7 @@ Babel==2.14.0
 decorator==5.1.1
 Django==5.0.3
 django-cors-headers==4.3.1
+django-filter==24.2
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 docxcompose==1.4.0
