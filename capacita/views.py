@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .filter import FichaFilter
+from .filters import FichaFilter
 from .models import Ficha
 from .serializers import FichaSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
