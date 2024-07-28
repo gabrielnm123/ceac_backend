@@ -1,11 +1,11 @@
-from .models import Ficha
+from .models import Cliente
 from django_filters.rest_framework import (
     FilterSet,
     CharFilter,
     DateFilter,
 )
 
-class FichaFilter(FilterSet):
+class ClienteFilter(FilterSet):
     nome = CharFilter(field_name='nome_completo', lookup_expr='icontains')
     cpf = CharFilter(field_name='cpf', lookup_expr='exact')
     data_nascimento = DateFilter(field_name='data_nascimento', lookup_expr='exact')
@@ -17,7 +17,7 @@ class FichaFilter(FilterSet):
     email = CharFilter(field_name='email', lookup_expr='exact')
 
     class Meta:
-        model = Ficha
+        model = Cliente
         fields = [
             'nome',
             'cpf',
