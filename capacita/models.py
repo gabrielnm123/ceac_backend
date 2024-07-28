@@ -135,3 +135,9 @@ class Ficha(models.Model):
     def save(self, *args, **kwargs) -> None:
         self.nome_completo = self.nome_completo.upper()
         super().save(*args, **kwargs)
+
+    class Meta:
+        permissions = [
+            ("capacita_buscarFicha", "Capacita/Buscar Ficha"),
+            ("capacita_criarFicha", "Capacita/Criar Ficha"),
+        ]
