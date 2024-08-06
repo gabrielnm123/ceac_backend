@@ -12,7 +12,7 @@ class Atividade(models.Model):
         self.atividade = self.atividade.strip()
         return super().save(*args, **kwargs)
 
-class Cliente(models.Model):
+class Ficha(models.Model):
     # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
     nome_completo = models.CharField(max_length=100, verbose_name='NOME COMPLETO:')
     cpf = models.CharField(max_length=11, verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
@@ -138,6 +138,6 @@ class Cliente(models.Model):
 
     class Meta:
         permissions = [
-            ("capacita_buscarCliente", "Capacita/Buscar Cliente"),
-            ("capacita_criarCliente", "Capacita/Criar Cliente"),
+            ("capacita_buscarFicha", "Capacita/Buscar Ficha"),
+            ("capacita_criarFicha", "Capacita/Criar Ficha"),
         ]
