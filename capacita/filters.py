@@ -6,7 +6,6 @@ from django_filters.rest_framework import (
 )
 
 class FichaFilter(FilterSet):
-    nis = CharFilter(field_name='nis', lookup_expr='exact')
     nome = CharFilter(field_name='nome_completo', lookup_expr='icontains')
     cpf = CharFilter(field_name='cpf', lookup_expr='exact')
     data_nascimento = DateFilter(field_name='data_nascimento', lookup_expr='exact')
@@ -21,7 +20,6 @@ class FichaFilter(FilterSet):
     class Meta:
         model = Ficha
         fields = [
-            'nis',
             'nome',
             'cpf',
             'data_nascimento',

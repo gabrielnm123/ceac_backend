@@ -14,7 +14,6 @@ class Atividade(models.Model):
 
 # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
 class Ficha(models.Model):
-    nis = models.CharField(max_length=11, verbose_name='NIS (Número de Identificação Social)')
     nome_completo = models.CharField(max_length=100, verbose_name='NOME COMPLETO:')
     cpf = models.CharField(max_length=11, verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
     genero = models.CharField(max_length=20, choices=(('M', 'MASCULINO'), ('F', 'FEMININO')), verbose_name='GÊNERO:')
@@ -132,7 +131,7 @@ class Ficha(models.Model):
 
     def clean(self):
         self.clean_list(
-            ('cpf', 'cep', 'cnpj', 'cnae_principal', 'celular', 'fixo', 'nis')
+            ('cpf', 'cep', 'cnpj', 'cnae_principal', 'celular', 'fixo')
         )
 
     def save(self, *args, **kwargs) -> None:
