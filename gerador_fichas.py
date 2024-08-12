@@ -14,7 +14,6 @@ fake = Faker('pt_BR')
 def gerar_ficha():
     atividade = random.choice(Atividade.objects.all())
     return Ficha(
-        nis=''.join(random.choices('0123456789', k=11)),
         nome_completo=fake.name().upper(),
         cpf=''.join(filter(str.isdigit, fake.cpf()))[:11],  # Garantindo que o CPF tenha no máximo 11 caracteres
         genero=random.choice(['M', 'F']),

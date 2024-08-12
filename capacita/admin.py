@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ficha, Atividade
+from .models import Ficha, ModulosAprendizagem
 from django.http import HttpResponse
 from docxtpl import DocxTemplate
 import zipfile
@@ -80,4 +80,4 @@ class FichaAdmin(admin.ModelAdmin):
     download_ficha.short_description = "Baixar ficha(s) selecionado(s)"
 
 admin.site.register(Ficha, FichaAdmin)
-admin.site.register(Atividade)
+admin.site.register(ModulosAprendizagem)
