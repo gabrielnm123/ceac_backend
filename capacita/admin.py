@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ficha, ModulosAprendizagem
+from .models import Ficha, ModulosAprendizagem, FichaModulo
 from django.http import HttpResponse
 from docxtpl import DocxTemplate
 import zipfile
@@ -9,7 +9,7 @@ from django.db import models
 
 class FichaAdmin(admin.ModelAdmin):
     search_fields = ['nome_completo', 'cpf']
-    list_display = ('nome_completo', 'cpf')
+    list_display = ['nome_completo', 'cpf']
     actions = ['download_ficha']
     production = 'capacita/doc/ficha.docx'
     is_production = os.path.isfile(production)
@@ -79,5 +79,15 @@ class FichaAdmin(admin.ModelAdmin):
 
     download_ficha.short_description = "Baixar ficha(s) selecionado(s)"
 
+class ModulosApredizagemAdmin(admin.ModelAdmin):
+    search_fields = ['nome']
+    list_display = ['nome', 'descricao']
+
+class FichaModuloAdmin(admin.ModelAdmin):
+    search_fields = ['ficha', 'modulo']
+    list_display = ['ficha', 'modulo']
+
+
 admin.site.register(Ficha, FichaAdmin)
-admin.site.register(ModulosAprendizagem)
+admin.site.register(ModulosAprendizagem, ModulosApredizagemAdmin)
+admin.site.register(FichaModulo, FichaModuloAdmin)
