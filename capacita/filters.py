@@ -16,6 +16,7 @@ class FichaFilter(FilterSet):
     celular = CharFilter(field_name='celular', lookup_expr='exact')
     fixo = CharFilter(field_name='fixo', lookup_expr='exact')
     email = CharFilter(field_name='email', lookup_expr='exact')
+    atividade = CharFilter(field_name='atividade', lookup_expr='exact')
 
     class Meta:
         model = Ficha
@@ -29,5 +30,6 @@ class FichaFilter(FilterSet):
             'atividade',
             'celular',
             'fixo',
-            'email'
+            'email',
+            'atividade'
         ]

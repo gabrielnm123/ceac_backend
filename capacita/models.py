@@ -37,12 +37,12 @@ class Ficha(models.Model):
     atividade = models.CharField(
     choices=(
         ('ARTESANATO', 'ARTESANATO'),
-        ('AGRICULTURA URBANA', 'AGRICULTURA_URBANA'),
-        ('COMÉRCIO', 'COMERCIO'),
-        ('ESTÉTICA E BELEZA', 'ESTETICA_E_BELEZA'),
+        ('AGRICULTURA_URBANA', 'AGRICULTURA URBANA'),
+        ('COMERCIO', 'COMÉRCIO'),
+        ('ESTETICA_E_BELEZA', 'ESTÉTICA E BELEZA'),
         ('GASTRONOMIA', 'GASTRONOMIA'),
-        ('INDÚSTRIA', 'INDUSTRIA'),
-        ('SERVIÇO', 'SERVICO'),
+        ('INDUSTRIA', 'INDÚSTRIA'),
+        ('SERVICO', 'SERVIÇO'),
     ),
     verbose_name='ATIVIDADE QUE ATUA OU DESEJA ATUAR:'
 )

@@ -48,9 +48,9 @@ def criar_modulos_aprendizagem():
     ]
 
     for modulo in modulos:
-        ModulosAprendizagem.objects.get_or_create(
+        ModulosAprendizagem.objects.create(
             nome=modulo['nome'],
-            defaults={'descricao': modulo['descricao']}
+            descricao=modulo['descricao']
         )
 
 def gerar_ficha():
@@ -60,7 +60,7 @@ def gerar_ficha():
         genero=random.choice(['M', 'F']),
         data_nascimento=fake.date_of_birth(minimum_age=18, maximum_age=70),
         escolaridade=random.choice(['FUNDAMENTAL', 'MEDIO', 'GRADUACAO', 'POS_GRADUACAO']),
-        atividade=random.choice(['ARTESANATO', 'AGRICULTURA URBANA', 'COMÉRCIO', 'ESTÉTICA E BELEZA', 'GASTRONOMIA', 'INDÚSTRIA', 'SERVIÇO']),
+        atividade = random.choice(['ARTESANATO', 'AGRICULTURA_URBANA', 'COMERCIO', 'ESTETICA_E_BELEZA', 'GASTRONOMIA', 'INDUSTRIA', 'SERVICO']),
         endereco=fake.street_address().upper(),
         complemento=fake.street_suffix().upper() if fake.boolean() else None,
         bairro=fake.bairro().upper(),
