@@ -1,12 +1,14 @@
-from .models import Ficha
+from .models import Ficha, ModulosAprendizagem
 from django_filters.rest_framework import (
     FilterSet,
     CharFilter,
     DateFilter,
+    ModelChoiceFilter
 )
 
 class FichaFilter(FilterSet):
     nome = CharFilter(field_name='nome_completo', lookup_expr='icontains')
+    modulos_aprendizagem = ModelChoiceFilter(queryset=ModulosAprendizagem.objects.all())
     cpf = CharFilter(field_name='cpf', lookup_expr='exact')
     data_nascimento = DateFilter(field_name='data_nascimento', lookup_expr='exact')
     genero = CharFilter(field_name='genero', lookup_expr='exact')
@@ -21,6 +23,7 @@ class FichaFilter(FilterSet):
         model = Ficha
         fields = [
             'nome',
+            'modulos_aprendizagem',
             'cpf',
             'data_nascimento',
             'genero',

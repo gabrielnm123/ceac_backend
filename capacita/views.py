@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import FichaFilter
-from .models import Ficha, ModulosAprendizagem, FichaModulo
-from .serializers import FichaSerializer, ModulosAprendizagemSerializer, FichaModuloSerializer
+from .models import Ficha, ModulosAprendizagem
+from .serializers import FichaSerializer, ModulosAprendizagemSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt import authentication
 
@@ -21,8 +21,8 @@ class ModulosAprendizagemViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
 
-class FichaModuloViewSet(viewsets.ModelViewSet):
-    queryset = FichaModulo.objects.all()
-    serializer_class = FichaModuloSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.JWTAuthentication]
+# class FichaModuloViewSet(viewsets.ModelViewSet):
+#     queryset = FichaModulo.objects.all()
+#     serializer_class = FichaModuloSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#     authentication_classes = [authentication.JWTAuthentication]

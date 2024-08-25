@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from .views import UserViewSet, GroupViewSet, PermissionViewSet, ContentTypeViewSet, get_current_user
-from capacita.views import FichaViewSet, ModulosAprendizagemViewSet, FichaModuloViewSet
+from capacita.views import FichaViewSet, ModulosAprendizagemViewSet
 from rest_framework import routers
 from django.views.generic import RedirectView
 
@@ -28,8 +28,8 @@ router.register(r'groups', GroupViewSet)
 router.register(r'permissions', PermissionViewSet)
 router.register(r'contenttypes', ContentTypeViewSet)
 router.register(r'capacita/fichas', FichaViewSet)
-router.register(r'capacita/modulos_aprendizagens', ModulosAprendizagemViewSet)
-router.register(r'capacita/ficha_modulos', FichaModuloViewSet)
+router.register(r'capacita/modulos_aprendizagem', ModulosAprendizagemViewSet)
+# router.register(r'capacita/ficha_modulos', FichaModuloViewSet)
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/admin')),

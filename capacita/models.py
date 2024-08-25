@@ -15,12 +15,12 @@ class ModulosAprendizagem(models.Model):
         super().save(*args, **kwargs)
 
 # Modelo intermediário para ligar Ficha com ModulosAprendizagem
-class FichaModulo(models.Model):
-    ficha = models.ForeignKey('Ficha', on_delete=models.CASCADE)
-    modulo = models.ForeignKey(ModulosAprendizagem, on_delete=models.CASCADE)
+# class FichaModulo(models.Model):
+#     ficha = models.ForeignKey('Ficha', on_delete=models.CASCADE)
+#     modulo = models.ForeignKey(ModulosAprendizagem, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.ficha.nome_completo
+#     def __str__(self):
+#         return self.ficha.nome_completo
 
 # FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
 class Ficha(models.Model):
@@ -121,8 +121,7 @@ class Ficha(models.Model):
     ), verbose_name='TIPO DE VÍNCULO')
 
     # Módulos de Capacitação com modelo intermediário
-    modulos_aprendizagem = models.ManyToManyField(ModulosAprendizagem, through='FichaModulo', blank=True, verbose_name='MÓDULOS DE CAPACITAÇÃO') # esse campo não deveria aparecer quando for criar a ficha do admin?
-
+    modulos_aprendizagem = models.ForeignKey(ModulosAprendizagem, verbose_name='MÓDULOS DE CAPACITAÇÃO', on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.nome_completo
 
