@@ -29,7 +29,6 @@ router.register(r'permissions', PermissionViewSet)
 router.register(r'contenttypes', ContentTypeViewSet)
 router.register(r'capacita/fichas', FichaViewSet)
 router.register(r'capacita/modulos_aprendizagem', ModulosAprendizagemViewSet)
-# router.register(r'capacita/ficha_modulos', FichaModuloViewSet)
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/admin')),

@@ -20,9 +20,3 @@ class ModulosAprendizagemViewSet(viewsets.ModelViewSet):
     serializer_class = ModulosAprendizagemSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
-
-# class FichaModuloViewSet(viewsets.ModelViewSet):
-#     queryset = FichaModulo.objects.all()
-#     serializer_class = FichaModuloSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-#     authentication_classes = [authentication.JWTAuthentication]

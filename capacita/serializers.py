@@ -10,8 +10,3 @@ class ModulosAprendizagemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModulosAprendizagem
         fields = '__all__'
-
-# class FichaModuloSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FichaModulo
-#         fields = '__all__'

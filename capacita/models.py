@@ -121,7 +121,8 @@ class Ficha(models.Model):
     ), verbose_name='TIPO DE VÍNCULO')
 
     # Módulos de Capacitação com modelo intermediário
-    modulos_aprendizagem = models.ForeignKey(ModulosAprendizagem, verbose_name='MÓDULOS DE CAPACITAÇÃO', on_delete=models.CASCADE)
+    modulo_aprendizagem = models.ForeignKey(ModulosAprendizagem, verbose_name='MÓDULOS DE CAPACITAÇÃO', on_delete=models.CASCADE)
+    
     def __str__(self) -> str:
         return self.nome_completo
 
@@ -148,6 +149,6 @@ class Ficha(models.Model):
 
     class Meta:
         permissions = [
-            ("capacita_buscarFicha", "Capacita/Buscar Ficha"),
-            ("capacita_criarFicha", "Capacita/Criar Ficha"),
+            ("buscarFicha", "Buscar Ficha"),
+            ("criarFicha", "Criar Ficha"),
         ]

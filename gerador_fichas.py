@@ -82,7 +82,7 @@ def gerar_ficha():
         cnae_principal=''.join(random.choices('0123456789', k=7)) if fake.boolean() else None,
         setor=random.choice(['COMERCIO', 'SERVICO', 'AGRONEGOCIOS', 'INDUSTRIA']) if fake.boolean() else None,
         tipo_vinculo=random.choice(['REPRESENTANTE', 'RESPONSAVEL']) if fake.boolean() else None,
-        modulos_aprendizagem=random.choice(ModulosAprendizagem.objects.all())
+        modulo_aprendizagem=random.choice(ModulosAprendizagem.objects.all())
     )
     ficha.save()
 
