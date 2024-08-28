@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import Ficha, ModulosAprendizagem
+from .models import Ficha, ModulosCapacita
 
 class FichaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ficha
         fields = '__all__'
 
-class ModulosAprendizagemSerializer(serializers.ModelSerializer):
+class ModulosCapacitaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ModulosAprendizagem
+        model = ModulosCapacita
         fields = '__all__'

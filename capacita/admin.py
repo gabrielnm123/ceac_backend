@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ficha, ModulosAprendizagem
+from .models import Ficha, ModulosCapacita
 from django.http import HttpResponse
 from docxtpl import DocxTemplate
 import zipfile
@@ -79,7 +79,7 @@ class FichaAdmin(admin.ModelAdmin):
 
     download_ficha.short_description = "Baixar ficha(s) selecionado(s)"
 
-class ModulosApredizagemAdmin(admin.ModelAdmin):
+class ModulosCapacitaAdmin(admin.ModelAdmin):
     search_fields = ['nome']
     list_display = ['id', 'nome', 'descricao']
 
@@ -89,5 +89,5 @@ class ModulosApredizagemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Ficha, FichaAdmin)
-admin.site.register(ModulosAprendizagem, ModulosApredizagemAdmin)
+admin.site.register(ModulosCapacita, ModulosCapacitaAdmin)
 # admin.site.register(FichaModulo, FichaModuloAdmin)

@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import FichaFilter
-from .models import Ficha, ModulosAprendizagem
-from .serializers import FichaSerializer, ModulosAprendizagemSerializer
+from .models import Ficha, ModulosCapacita
+from .serializers import FichaSerializer, ModulosCapacitaSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt import authentication
 
@@ -15,8 +15,8 @@ class FichaViewSet(viewsets.ModelViewSet):
     filterset_class = FichaFilter
     ordering_fields = '__all__'
 
-class ModulosAprendizagemViewSet(viewsets.ModelViewSet):
-    queryset = ModulosAprendizagem.objects.all()
-    serializer_class = ModulosAprendizagemSerializer
+class ModulosCapacitaViewSet(viewsets.ModelViewSet):
+    queryset = ModulosCapacita.objects.all()
+    serializer_class = ModulosCapacitaSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]

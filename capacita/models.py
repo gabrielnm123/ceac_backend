@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-class ModulosAprendizagem(models.Model):
+class ModulosCapacita(models.Model):
     nome = models.CharField(unique=True, verbose_name="Nome do Módulo")
     descricao = models.TextField(unique=True, verbose_name="Descrição", blank=True, null=True)
     disponivel = models.BooleanField(default=True, verbose_name="Disponível para Seleção")
@@ -121,7 +121,7 @@ class Ficha(models.Model):
     ), verbose_name='TIPO DE VÍNCULO')
 
     # Módulos de Capacitação com modelo intermediário
-    modulo_aprendizagem = models.ForeignKey(ModulosAprendizagem, verbose_name='MÓDULOS DE CAPACITAÇÃO', on_delete=models.CASCADE)
+    modulo_capacita = models.ForeignKey(ModulosCapacita, verbose_name='MÓDULOS DE CAPACITAÇÃO', on_delete=models.CASCADE)
     
     def __str__(self) -> str:
         return self.nome_completo
