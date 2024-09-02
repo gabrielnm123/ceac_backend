@@ -14,15 +14,6 @@ class ModulosCapacita(models.Model):
         self.descricao = self.descricao.upper().strip()
         super().save(*args, **kwargs)
 
-# Modelo intermediário para ligar Ficha com ModulosAprendizagem
-# class FichaModulo(models.Model):
-#     ficha = models.ForeignKey('Ficha', on_delete=models.CASCADE)
-#     modulo = models.ForeignKey(ModulosAprendizagem, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.ficha.nome_completo
-
-# FICHA DE INSCRIÇÃO DE CAPACITAÇÃO
 class Ficha(models.Model):
     nome_completo = models.CharField(verbose_name='NOME COMPLETO:')
     cpf = models.CharField(max_length=11, unique=True, verbose_name='CADASTRO DE PESSOA FÍSICA (CPF):')
