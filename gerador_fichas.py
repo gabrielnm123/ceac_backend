@@ -7,11 +7,11 @@ import random
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from capacita.models import Ficha, ModulosAprendizagem
+from capacita.models import Ficha, ModulosCapacita
 
 fake = Faker('pt_BR')
 
-def criar_modulos_aprendizagem():
+def criar_modulos_capacita():
     modulos = [
         {
             'nome': 'MARKETING',
@@ -48,7 +48,7 @@ def criar_modulos_aprendizagem():
     ]
 
     for modulo in modulos:
-        ModulosAprendizagem.objects.create(
+        ModulosCapacita.objects.create(
             nome=modulo['nome'],
             descricao=modulo['descricao']
         )
@@ -82,14 +82,14 @@ def gerar_ficha():
         cnae_principal=''.join(random.choices('0123456789', k=7)) if fake.boolean() else None,
         setor=random.choice(['COMERCIO', 'SERVICO', 'AGRONEGOCIOS', 'INDUSTRIA']) if fake.boolean() else None,
         tipo_vinculo=random.choice(['REPRESENTANTE', 'RESPONSAVEL']) if fake.boolean() else None,
-        modulo_aprendizagem=random.choice(ModulosAprendizagem.objects.all())
+        modulo_capacita=random.choice(ModulosCapacita.objects.all())
     )
     ficha.save()
 
     return ficha
 
 # Criando os módulos de aprendizagem se não existirem
-criar_modulos_aprendizagem()
+criar_modulos_capacita()
 
 # Gerando 150 fichas
 for _ in range(150):
