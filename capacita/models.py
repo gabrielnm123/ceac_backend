@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 class ModulosCapacita(models.Model):
     nome = models.CharField(unique=True, verbose_name="Nome do Módulo")
@@ -113,6 +114,7 @@ class Ficha(models.Model):
 
     # Módulos de Capacitação com modelo intermediário
     modulo_capacita = models.ForeignKey(ModulosCapacita, verbose_name='MÓDULOS DE CAPACITAÇÃO', on_delete=models.CASCADE)
+    data_criacao = models.DateField(default=timezone.now, verbose_name='DATA CRIAÇÃO:')
     
     def __str__(self) -> str:
         return self.nome_completo

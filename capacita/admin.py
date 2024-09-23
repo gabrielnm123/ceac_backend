@@ -83,11 +83,5 @@ class ModulosCapacitaAdmin(admin.ModelAdmin):
     search_fields = ['nome']
     list_display = ['id', 'nome', 'descricao']
 
-# class FichaModuloAdmin(admin.ModelAdmin):
-#     search_fields = ['ficha__nome_completo', 'modulo__nome']
-#     list_display = ['id', 'ficha', 'modulo']
-
-
 admin.site.register(Ficha, FichaAdmin)
 admin.site.register(ModulosCapacita, ModulosCapacitaAdmin)
-# admin.site.register(FichaModulo, FichaModuloAdmin)
