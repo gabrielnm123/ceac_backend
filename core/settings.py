@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,42 +22,47 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load the environment varible
 load_dotenv()
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', 'true').lower() == 'true'
+
+def get_env(var_name: str, var_sub: str):
+    if DEBUG:
+        return os.getenv(var_name, var_sub)
+    else:
+        if var_name in os.environ:
+            return os.getenv(var_name)
+        else:
+            raise ValueError(f'A variavel de ambiente {var_name} não foi definido')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'o==5e^esun8)xwh1*8dog(o!0!v+dfsme8d+1#sj=qeakrq62m')
+SECRET_KEY = get_env('SECRET_KEY', 'o==5e^esun8)xwh1*8dog(o!0!v+dfsme8d+1#sj=qeakrq62m')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True')
-if DEBUG == 'True':
-    DEBUG = True
-elif DEBUG == 'False':
-    DEBUG = False
 
 # If data base is in machine installed
-# DATABASES_IN_MACHINE = True 
+DATABASES_IN_MACHINE = False
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'ceac'),
-        'HOST': os.getenv('POSTGRES_HOST', '0.0.0.0'),
+        'NAME': get_env('POSTGRES_DB', 'ceac'),
+        'HOST': get_env('POSTGRES_HOST', '0.0.0.0'),
         'PORT': 5432,
-        'USER': os.getenv('POSTGRES_USER', 'admin'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'z_xs-!@*wyq6&ewf38rtjl#!5-obs*8mtdrpov%zq_91w6')
+        'USER': get_env('POSTGRES_USER', 'admin'),
+        'PASSWORD': get_env('POSTGRES_PASSWORD', 'z_xs-!@*wyq6&ewf38rtjl#!5-obs*8mtdrpov%zq_91w6')
     }
 }
 
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')  
+ALLOWED_HOSTS = get_env('ALLOWED_HOSTS', '*').split(',')
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8002,http://127.0.0.1:8002').split(',')
+CSRF_TRUSTED_ORIGINS = get_env('CSRF_TRUSTED_ORIGINS', '*').split(',')
 
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:9000,http://127.0.0.1:9000').split(',')
+CORS_ALLOWED_ORIGINS = get_env('CORS_ALLOWED_ORIGINS', '*').split(',')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -94,7 +101,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
 ]
 
 
@@ -158,9 +164,34 @@ STATIC_URL = '/static/'
 
 # Configurar o local onde os arquivos estáticos serão coletados para produção
 STATIC_ROOT = os.path.join(BASE_DIR, './static')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Define o tempo de vida do access token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),   # Tempo de vida do refresh token
+    'ROTATE_REFRESH_TOKENS': True,                # Renova o refresh token quando o access token é renovado
+    'BLACKLIST_AFTER_ROTATION': True,             # Coloca o refresh token antigo na lista negra após a renovação
+    'AUTH_COOKIE': 'access_token',                # Nome do cookie para o access token
+    'AUTH_COOKIE_REFRESH': 'access_token',       # Nome do cookie para o refresh token
+    'AUTH_COOKIE_SECURE': not DEBUG,                   # True para cookies seguros (HTTPS)
+    'AUTH_COOKIE_HTTP_ONLY': True,                # Protege contra XSS, impedindo acesso via JavaScript
+    'AUTH_COOKIE_SAMESITE': 'Lax',                # Protege contra CSRF
+}
+
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 3600  # Força o navegador a usar HTTPS
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Aplica HSTS a todos os subdomínios
+    SECURE_HSTS_PRELOAD = True  # Pré-carrega HSTS para os navegadores
+    SECURE_CONTENT_TYPE_NOSNIFF = True  # Protege contra ataques MIME sniffing
+    SECURE_BROWSER_XSS_FILTER = True  # Protege contra ataques XSS
+    SESSION_COOKIE_SECURE = True  # Garante que os cookies de sessão sejam transmitidos via HTTPS
+    CSRF_COOKIE_SECURE = True  # Garante que o cookie CSRF seja transmitido via HTTPS
+    X_FRAME_OPTIONS = 'DENY'  # Protege contra ataques de Clickjacking
