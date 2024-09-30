@@ -1,11 +1,44 @@
 from django.contrib.auth.models import Group, User, Permission
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import permissions, viewsets
+# from django.contrib.auth import authenticate
+from rest_framework import permissions, viewsets, status, decorators, response
 from .serializers import GroupSerializer, UserSerializer, PermissionSerializer, ContentTypeSerializer
-from rest_framework_simplejwt import authentication
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.response import Response
-from django.contrib.auth import authenticate
+from rest_framework_simplejwt import authentication, views
+from django.conf import settings
+
+class CustomTokenObtainPairView(views.TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == status.HTTP_200_OK:
+            # Adiciona o refresh token como um cookie seguro
+            response.set_cookie(
+                key='refresh_token',
+                value=response.data['refresh'],
+                httponly=True,
+                secure=not settings.DEBUG,  # Usa HTTPS apenas em produção
+                samesite='Lax',  # Protege contra CSRF
+                max_age=7 * 24 * 60 * 60  # Tempo de vida do cookie (7 dias)
+            )
+            # Remove o refresh token da resposta JSON
+            del response.data['refresh']
+        return response
+
+class CustomTokenRefreshView(views.TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        request.data['refresh'] = request.COOKIES.get('refresh_token')
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == status.HTTP_200_OK:
+            # Atualiza o refresh token no cookie seguro
+            response.set_cookie(
+                key='refresh_token',
+                value=response.data['refresh'],
+                httponly=True,
+                secure=not settings.DEBUG,  # Usa HTTPS apenas em produção
+                samesite='Lax',
+                max_age=7 * 24 * 60 * 60
+            )
+            del response.data['refresh']
+        return response
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -31,24 +64,25 @@ class ContentTypeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
 
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
-@authentication_classes([authentication.JWTAuthentication])
+@decorators.api_view(['GET'])
+@decorators.permission_classes([permissions.IsAuthenticated])
+@decorators.authentication_classes([authentication.JWTAuthentication])
 def get_current_user(request):
     user = request.user
-    return Response({'id': user.id})
+    return response.Response({'id': user.id})
 
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-@authentication_classes([authentication.JWTAuthentication])
+@decorators.api_view(['POST'])
+@decorators.permission_classes([permissions.IsAuthenticated])
+@decorators.authentication_classes([authentication.JWTAuthentication])
 def check_password(request, user_id):
     """
     Verifica se a senha fornecida é correta para o usuário atual.
     """
     password = request.data.get('password')
-    user = authenticate(username=request.user.username, password=password)
-    
-    if user is not None:
-        return Response({'valid': True})
+    if not password:
+        return response.Response({'error': 'Senha necessária.'}, status=status.HTTP_400_BAD_REQUEST)
+    user = request.user  # Já autenticado
+    if user.check_password(password):  # Método nativo do modelo User
+        return response.Response({'valid': True})
     else:
-        return Response({'valid': False})
+        return response.Response({'valid': False})

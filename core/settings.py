@@ -60,9 +60,9 @@ DATABASES = {
 
 ALLOWED_HOSTS = get_env('ALLOWED_HOSTS', '*').split(',')
 
-CSRF_TRUSTED_ORIGINS = get_env('CSRF_TRUSTED_ORIGINS', '*').split(',')
+CSRF_TRUSTED_ORIGINS = get_env('CSRF_TRUSTED_ORIGINS', 'http://localhost:8002,http://127.0.0.1:8002').split(',')
 
-CORS_ALLOWED_ORIGINS = get_env('CORS_ALLOWED_ORIGINS', '*').split(',')
+CORS_ALLOWED_ORIGINS = get_env('CORS_ALLOWED_ORIGINS', 'http://localhost:9000,http://127.0.0.1:9000').split(',')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -176,7 +176,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Define o tempo de vida do access token
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),   # Tempo de vida do refresh token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # Tempo de vida do refresh token
     'ROTATE_REFRESH_TOKENS': True,                # Renova o refresh token quando o access token é renovado
     'BLACKLIST_AFTER_ROTATION': True,             # Coloca o refresh token antigo na lista negra após a renovação
     'AUTH_COOKIE': 'access_token',                # Nome do cookie para o access token
