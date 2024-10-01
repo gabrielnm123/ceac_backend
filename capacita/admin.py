@@ -11,41 +11,44 @@ class FichaAdmin(admin.ModelAdmin):
     search_fields = ['nome_completo', 'cpf']
     list_display = ['id', 'nome_completo', 'cpf']
     actions = ['download_ficha']
-    production = 'capacita/doc/ficha.docx'
-    is_production = os.path.isfile(production)
-    dev = 'backend/capacita/doc/ficha.docx'
-    is_dev = os.path.isfile(dev)
+    template_path = 'capacita/doc/ficha.docx'
     context = dict()
 
     def __init__(self, model: type, admin_site: admin.AdminSite | None) -> None:
-        if self.is_production:
-            self.document = DocxTemplate(self.production)
-        elif self.is_dev:
-            self.document = DocxTemplate(self.dev)
+        if os.path.isfile(self.template_path):
+            self.document = DocxTemplate(self.template_path)
         super().__init__(model, admin_site)
 
     def trata_ficha(self, ficha):
         for field in ficha._meta.fields:
             campo = ficha._meta.get_field(field.name)
-            # Verificar se o campo é uma instância de models.CharField e se tem choices
             ficha_element = getattr(ficha, field.name)
             if ficha_element:
-                try:
+                if isinstance(campo, models.DateField):
                     ficha_element = ficha_element.strftime('%d/%m/%Y')
                     self.context[field.name] = str(ficha_element)
-                except:
-                    if isinstance(campo, models.CharField) and campo.choices:
-                        # Obter o valor atual do campo
-                        valor_campo = getattr(ficha, field.name)
-                        # Encontrar a opção correspondente no atributo choices
-                        opcoes = dict(campo.choices)
-                        opcao_escolhida = opcoes.get(valor_campo)
-                        # Imprimir a opção escolhida
-                        self.context[field.name] = str(opcao_escolhida)
-                    elif ficha_element == True:
-                        self.context[field.name] = 'x'
-                    else:
-                        self.context[field.name] = str(ficha_element)
+                elif isinstance(campo, models.CharField) and campo.choices:
+                    valor_campo = getattr(ficha, field.name)
+                    opcoes = dict(campo.choices)
+                    opcao_escolhida = opcoes.get(valor_campo)
+                    self.context[field.name] = str(opcao_escolhida)
+                elif field.name == 'cpf':
+                    # Formatação padrão para CPF: 123.456.789-10
+                    self.context[field.name] = f"{ficha_element[:3]}.{ficha_element[3:6]}.{ficha_element[6:9]}-{ficha_element[9:]}"
+                elif field.name == 'cnpj':
+                    # Formatação padrão para CNPJ: 12.345.678/0001-90
+                    self.context[field.name] = f"{ficha_element[:2]}.{ficha_element[2:5]}.{ficha_element[5:8]}/{ficha_element[8:12]}-{ficha_element[12:]}"
+                elif field.name == 'fixo':
+                    # Formatação padrão para telefone fixo: (12) 3456-7890
+                    self.context[field.name] = f"({ficha_element[:2]}) {ficha_element[2:6]}-{ficha_element[6:]}"
+                elif field.name == 'celular':
+                    # Formatação padrão para celular: (12) 9 8765-4321
+                    self.context[field.name] = f"({ficha_element[:2]}) {ficha_element[2]} {ficha_element[3:7]}-{ficha_element[7:]}"
+                elif field.name == 'cep':
+                    # Formatação padrão para CEP: 12345-678
+                    self.context[field.name] = f"{ficha_element[:5]}-{ficha_element[5:]}"
+                else:
+                    self.context[field.name] = str(ficha_element) if ficha_element else ''  # Se o campo estiver None, fica vazio
         self.document.render(self.context)
 
     def download_ficha(self, request, queryset):

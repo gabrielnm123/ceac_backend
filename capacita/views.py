@@ -41,37 +41,31 @@ def download_ficha_view(request, ficha_id):
         campo = ficha._meta.get_field(field.name)
         ficha_element = getattr(ficha, field.name)
         if ficha_element:
-            try:
-                if isinstance(campo, models.DateField) or isinstance(campo, models.DateTimeField):
-                    ficha_element = ficha_element.strftime('%d/%m/%Y')
+            if isinstance(campo, models.DateField):
+                ficha_element = ficha_element.strftime('%d/%m/%Y')
                 context[field.name] = str(ficha_element)
-            except (AttributeError, ValueError):
-                if isinstance(campo, models.CharField) and campo.choices:
-                    valor_campo = getattr(ficha, field.name)
-                    opcoes = dict(campo.choices)
-                    opcao_escolhida = opcoes.get(valor_campo)
-                    context[field.name] = str(opcao_escolhida)
-                elif ficha_element == True:
-                    context[field.name] = 'x'
-                else:
-                    # Adiciona a formatação para campos específicos
-                    if field.name == 'cpf':
-                        # Formatação padrão para CPF: 123.456.789-10
-                        context[field.name] = f"{ficha_element[:3]}.{ficha_element[3:6]}.{ficha_element[6:9]}-{ficha_element[9:]}"
-                    elif field.name == 'cnpj':
-                        # Formatação padrão para CNPJ: 12.345.678/0001-90
-                        context[field.name] = f"{ficha_element[:2]}.{ficha_element[2:5]}.{ficha_element[5:8]}/{ficha_element[8:12]}-{ficha_element[12:]}"
-                    elif field.name == 'fixo':
-                        # Formatação padrão para telefone fixo: (12) 3456-7890
-                        context[field.name] = f"({ficha_element[:2]}) {ficha_element[2:6]}-{ficha_element[6:]}"
-                    elif field.name == 'celular':
-                        # Formatação padrão para celular: (12) 9 8765-4321
-                        context[field.name] = f"({ficha_element[:2]}) {ficha_element[2]} {ficha_element[3:7]}-{ficha_element[7:]}"
-                    elif field.name == 'cep':
-                        # Formatação padrão para CEP: 12345-678
-                        context[field.name] = f"{ficha_element[:5]}-{ficha_element[5:]}"
-                    else:
-                        context[field.name] = str(ficha_element) if ficha_element else ''  # Se o campo estiver None, fica vazio
+            elif isinstance(campo, models.CharField) and campo.choices:
+                valor_campo = getattr(ficha, field.name)
+                opcoes = dict(campo.choices)
+                opcao_escolhida = opcoes.get(valor_campo)
+                context[field.name] = str(opcao_escolhida)
+            elif field.name == 'cpf':
+                # Formatação padrão para CPF: 123.456.789-10
+                context[field.name] = f"{ficha_element[:3]}.{ficha_element[3:6]}.{ficha_element[6:9]}-{ficha_element[9:]}"
+            elif field.name == 'cnpj':
+                # Formatação padrão para CNPJ: 12.345.678/0001-90
+                context[field.name] = f"{ficha_element[:2]}.{ficha_element[2:5]}.{ficha_element[5:8]}/{ficha_element[8:12]}-{ficha_element[12:]}"
+            elif field.name == 'fixo':
+                # Formatação padrão para telefone fixo: (12) 3456-7890
+                context[field.name] = f"({ficha_element[:2]}) {ficha_element[2:6]}-{ficha_element[6:]}"
+            elif field.name == 'celular':
+                # Formatação padrão para celular: (12) 9 8765-4321
+                context[field.name] = f"({ficha_element[:2]}) {ficha_element[2]} {ficha_element[3:7]}-{ficha_element[7:]}"
+            elif field.name == 'cep':
+                # Formatação padrão para CEP: 12345-678
+                context[field.name] = f"{ficha_element[:5]}-{ficha_element[5:]}"
+            else:
+                context[field.name] = str(ficha_element) if ficha_element else ''  # Se o campo estiver None, fica vazio
 
     document.render(context)
     
