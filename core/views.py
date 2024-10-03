@@ -28,16 +28,21 @@ class CustomTokenRefreshView(views.TokenRefreshView):
         request.data['refresh'] = request.COOKIES.get('refresh_token')
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_200_OK:
-            # Atualiza o refresh token no cookie seguro
-            response.set_cookie(
-                key='refresh_token',
-                value=response.data['refresh'],
-                httponly=True,
-                secure=not settings.DEBUG,  # Usa HTTPS apenas em produção
-                samesite='Lax',
-                max_age=7 * 24 * 60 * 60
-            )
-            del response.data['refresh']
+            # Verifique se 'refresh' está em response.data
+            if 'refresh' in response.data:
+                # Atualiza o token de atualização no cookie
+                response.set_cookie(
+                    key='refresh_token',
+                    value=response.data['refresh'],
+                    httponly=True,
+                    secure=not settings.DEBUG,  # Usa HTTPS apenas em produção
+                    samesite='Lax',
+                    max_age=7 * 24 * 60 * 60
+                )
+                del response.data['refresh']
+            else:
+                # Se 'refresh' não estiver na resposta, isso é um problema
+                return views.Response({'detail': 'Token de atualização não retornado.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return response
 
 class UserViewSet(viewsets.ModelViewSet):
