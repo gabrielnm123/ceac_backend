@@ -3,42 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 # from django.contrib.auth import authenticate
 from rest_framework import permissions, viewsets, status, decorators, response
 from .serializers import GroupSerializer, UserSerializer, PermissionSerializer, ContentTypeSerializer
-from rest_framework_simplejwt import authentication, views
-from django.conf import settings
-
-class CustomTokenObtainPairView(views.TokenObtainPairView):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == status.HTTP_200_OK:
-            # Adiciona o refresh token como um cookie seguro
-            response.set_cookie(
-                key='refresh_token',
-                value=response.data['refresh'],
-                httponly=True,
-                secure=not settings.DEBUG,  # Usa HTTPS apenas em produção
-                samesite='Lax',  # Protege contra CSRF
-                max_age=7 * 24 * 60 * 60  # Tempo de vida do cookie (7 dias)
-            )
-            # Remove o refresh token da resposta JSON
-            del response.data['refresh']
-        return response
-
-class CustomTokenRefreshView(views.TokenRefreshView):
-    def post(self, request, *args, **kwargs):
-        request.data['refresh'] = request.COOKIES.get('refresh_token')
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == status.HTTP_200_OK:
-            # Atualiza o refresh token no cookie seguro
-            response.set_cookie(
-                key='refresh_token',
-                value=response.data['refresh'],
-                httponly=True,
-                secure=not settings.DEBUG,  # Usa HTTPS apenas em produção
-                samesite='Lax',
-                max_age=7 * 24 * 60 * 60
-            )
-            del response.data['refresh']
-        return response
+from rest_framework_simplejwt import authentication
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

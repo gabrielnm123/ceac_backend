@@ -64,6 +64,8 @@ CSRF_TRUSTED_ORIGINS = get_env('CSRF_TRUSTED_ORIGINS', 'http://localhost:8002,ht
 
 CORS_ALLOWED_ORIGINS = get_env('CORS_ALLOWED_ORIGINS', 'http://localhost:9000,http://127.0.0.1:9000').split(',')
 
+CORS_ALLOW_CREDENTIALS = True
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
@@ -86,16 +88,18 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'capacita',
     'administrator',
     'django_filters',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -180,10 +184,10 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,                # Renova o refresh token quando o access token é renovado
     'BLACKLIST_AFTER_ROTATION': True,             # Coloca o refresh token antigo na lista negra após a renovação
     'AUTH_COOKIE': 'access_token',                # Nome do cookie para o access token
-    'AUTH_COOKIE_REFRESH': 'access_token',       # Nome do cookie para o refresh token
-    'AUTH_COOKIE_SECURE': not DEBUG,                   # True para cookies seguros (HTTPS)
+    'AUTH_COOKIE_REFRESH': 'refresh_token',       # Nome do cookie para o refresh token
+    'AUTH_COOKIE_SECURE': not DEBUG,              # True para cookies seguros (HTTPS)
     'AUTH_COOKIE_HTTP_ONLY': True,                # Protege contra XSS, impedindo acesso via JavaScript
-    'AUTH_COOKIE_SAMESITE': 'Lax',                # Protege contra CSRF
+    'AUTH_COOKIE_SAMESITE': 'Lax',  # Em desenvolvimento, permite navegação cruzada
 }
 
 if not DEBUG:
