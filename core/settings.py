@@ -187,7 +187,7 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_REFRESH': 'refresh_token',       # Nome do cookie para o refresh token
     'AUTH_COOKIE_SECURE': not DEBUG,              # True para cookies seguros (HTTPS)
     'AUTH_COOKIE_HTTP_ONLY': True,                # Protege contra XSS, impedindo acesso via JavaScript
-    'AUTH_COOKIE_SAMESITE': 'Strict',  # Em desenvolvimento, permite navegação cruzada
+    'AUTH_COOKIE_SAMESITE': 'Strict',
 }
 
 SESSION_COOKIE_SAMESITE = 'Strict'
