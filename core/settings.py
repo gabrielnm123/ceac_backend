@@ -187,8 +187,11 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_REFRESH': 'refresh_token',       # Nome do cookie para o refresh token
     'AUTH_COOKIE_SECURE': not DEBUG,              # True para cookies seguros (HTTPS)
     'AUTH_COOKIE_HTTP_ONLY': True,                # Protege contra XSS, impedindo acesso via JavaScript
-    'AUTH_COOKIE_SAMESITE': 'Lax',  # Em desenvolvimento, permite navegação cruzada
+    'AUTH_COOKIE_SAMESITE': 'Strict',  # Em desenvolvimento, permite navegação cruzada
 }
+
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_SAMESITE = 'Strict'
 
 if not DEBUG:
     SECURE_HSTS_SECONDS = 3600  # Força o navegador a usar HTTPS
