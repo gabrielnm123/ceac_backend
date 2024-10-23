@@ -54,17 +54,18 @@ def criar_modulos_capacita():
         )
 
 def gerar_ficha():
+    # Gerando dados pessoais obrigatórios
     ficha = Ficha(
         nome_completo=fake.name().upper(),
         cpf=''.join(filter(str.isdigit, fake.cpf()))[:11],
         genero=random.choice(['M', 'F']),
         data_nascimento=fake.date_of_birth(minimum_age=18, maximum_age=70),
         escolaridade=random.choice(['FUNDAMENTAL', 'MEDIO', 'GRADUACAO', 'POS_GRADUACAO']),
-        atividade = random.choice(['ARTESANATO', 'AGRICULTURA_URBANA', 'COMERCIO', 'ESTETICA_E_BELEZA', 'GASTRONOMIA', 'INDUSTRIA', 'SERVICO']),
+        atividade=random.choice(['ARTESANATO', 'AGRICULTURA_URBANA', 'COMERCIO', 'ESTETICA_E_BELEZA', 'GASTRONOMIA', 'INDUSTRIA', 'SERVICO']),
+        cep=''.join(filter(str.isdigit, fake.postcode()))[:8],
         endereco=fake.street_address().upper(),
         complemento=fake.street_suffix().upper() if fake.boolean() else None,
         bairro=fake.bairro().upper(),
-        cep=''.join(filter(str.isdigit, fake.postcode()))[:8],
         uf=random.choice(['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']),
         celular=''.join(filter(str.isdigit, fake.cellphone_number()))[:11],
         fixo=''.join(filter(str.isdigit, fake.phone_number()))[:10] if fake.boolean() else None,
@@ -72,20 +73,25 @@ def gerar_ficha():
         interesse_ter_negocio=random.choice(['S', 'N']),
         preferencia_aula=random.choice(['ONLINE', 'PRESENCIAL']),
         meio_comunicacao_aula=random.choice(['WHATSAPP', 'EMAIL']),
-        assistir_online=random.choice(['S', 'N']),
-        if_true_assistir_casa=random.choice(['COMPUTADOR', 'CELULAR', 'TABLET', 'OUTRO']) if fake.boolean() else None,
-        nome_fantasia=fake.company().upper() if fake.boolean() else None,
-        cnpj=''.join(filter(str.isdigit, fake.cnpj()))[:14] if fake.boolean() else None,
-        situacao_empresa=random.choice(['ATIVA', 'N_ATIVA']) if fake.boolean() else None,
-        porte_empresa=random.choice(['MEI', 'ME']) if fake.boolean() else None,
-        data_abertura=fake.date_this_century() if fake.boolean() else None,
-        cnae_principal=''.join(random.choices('0123456789', k=7)) if fake.boolean() else None,
-        setor=random.choice(['COMERCIO', 'SERVICO', 'AGRONEGOCIOS', 'INDUSTRIA']) if fake.boolean() else None,
-        tipo_vinculo=random.choice(['REPRESENTANTE', 'RESPONSAVEL']) if fake.boolean() else None,
-        modulo_capacita=random.choice(ModulosCapacita.objects.all())
+        assistir_online='S' if random.choice([True, False]) else 'N',
+        if_true_assistir_casa=random.choice(['COMPUTADOR', 'CELULAR', 'TABLET', 'OUTRO']) if random.choice([True, False]) and 'S' == 'S' else None,
+        modulo_capacita=random.choice(ModulosCapacita.objects.all()),
+        data_criacao=fake.date_this_year()
     )
-    ficha.save()
 
+    # Se for preencher os dados jurídicos, todos os campos devem ser preenchidos
+    preencher_dados_juridicos = random.choice([True, False])
+    if preencher_dados_juridicos:
+        ficha.nome_fantasia = fake.company().upper()
+        ficha.cnpj = ''.join(filter(str.isdigit, fake.cnpj()))[:14]
+        ficha.situacao_empresa = random.choice(['ATIVA', 'N_ATIVA'])
+        ficha.porte_empresa = random.choice(['MEI', 'ME'])
+        ficha.data_abertura = fake.date_this_century()
+        ficha.cnae_principal = ''.join(random.choices('0123456789', k=7))
+        ficha.setor = random.choice(['COMERCIO', 'SERVICO', 'AGRONEGOCIOS', 'INDUSTRIA'])
+        ficha.tipo_vinculo = random.choice(['REPRESENTANTE', 'RESPONSAVEL'])
+
+    ficha.save()
     return ficha
 
 # Criando os módulos de aprendizagem se não existirem
