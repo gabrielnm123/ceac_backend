@@ -74,10 +74,12 @@ def gerar_ficha():
         preferencia_aula=random.choice(['ONLINE', 'PRESENCIAL']),
         meio_comunicacao_aula=random.choice(['WHATSAPP', 'EMAIL']),
         assistir_online='S' if random.choice([True, False]) else 'N',
-        if_true_assistir_casa=random.choice(['COMPUTADOR', 'CELULAR', 'TABLET', 'OUTRO']) if random.choice([True, False]) and 'S' == 'S' else None,
         modulo_capacita=random.choice(ModulosCapacita.objects.all()),
         data_criacao=fake.date_this_year()
     )
+
+    if ficha.assistir_online == 'S':
+        ficha.if_true_assistir_casa = random.choice(['COMPUTADOR', 'CELULAR', 'TABLET', 'OUTRO'])
 
     # Se for preencher os dados jurídicos, todos os campos devem ser preenchidos
     preencher_dados_juridicos = random.choice([True, False])
