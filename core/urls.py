@@ -10,7 +10,6 @@ from .views import (
     CustomTokenObtainPairView,
     CustomTokenRefreshView,
     logout_view,
-    csrf,
 )
 from capacita.views import FichaViewSet, ModulosCapacitaViewSet, download_ficha_view
 from rest_framework import routers
@@ -40,5 +39,4 @@ urlpatterns = [
         download_ficha_view,
         name="download_ficha",
     ),
-    path("api/csrf/", csrf, name="csrf"),
 ]

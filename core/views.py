@@ -11,13 +11,7 @@ from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
 from django.conf import settings
-from django.http import HttpResponse
 from .authentication import CookieJWTAuthentication
-
-
-@decorators.api_view(["GET"])
-def csrf(request):
-    return HttpResponse()
 
 
 class UserViewSet(viewsets.ModelViewSet):

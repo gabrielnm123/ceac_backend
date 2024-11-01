@@ -3,7 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .filters import FichaFilter
 from .models import Ficha, ModulosCapacita
 from .serializers import FichaSerializer, ModulosCapacitaSerializer
-from rest_framework_simplejwt import authentication
+from core.authentication import CookieJWTAuthentication
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from docxtpl import DocxTemplate
@@ -16,7 +16,7 @@ class FichaViewSet(viewsets.ModelViewSet):
     queryset = Ficha.objects.all()
     serializer_class = FichaSerializer
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = [CookieJWTAuthentication]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = FichaFilter
     ordering_fields = '__all__'
@@ -25,7 +25,7 @@ class ModulosCapacitaViewSet(viewsets.ModelViewSet):
     queryset = ModulosCapacita.objects.all()
     serializer_class = ModulosCapacitaSerializer
     permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = [CookieJWTAuthentication]
 
 def download_ficha_view(request, ficha_id):
     template_path = 'capacita/doc/ficha.docx'
