@@ -7,11 +7,55 @@ from .serializers import (
     PermissionSerializer,
     ContentTypeSerializer,
 )
-from rest_framework_simplejwt import authentication
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenBlacklistView,  # confirmar se realmente ta indo altomaticamente para o black list
+)
 from rest_framework.response import Response
 from django.conf import settings
 from .authentication import CookieJWTAuthentication
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+@decorators.api_view(["GET"])
+@decorators.permission_classes([permissions.IsAuthenticated])
+@decorators.authentication_classes([CookieJWTAuthentication])
+def get_current_user(request):
+    user = request.user
+    return response.Response({"id": user.id})
+
+
+@decorators.api_view(["POST"])
+@decorators.permission_classes([permissions.IsAuthenticated])
+@decorators.authentication_classes([CookieJWTAuthentication])
+def check_password(request, user_id):
+    """
+    Verifica se a senha fornecida é correta para o usuário atual.
+    """
+    password = request.data.get("password")
+    if not password:
+        return response.Response(
+            {"error": "Senha necessária."}, status=status.HTTP_400_BAD_REQUEST
+        )
+    user = request.user  # Já autenticado
+    if user.check_password(password):  # Método nativo do modelo User
+        return response.Response({"valid": True})
+    else:
+        return response.Response({"valid": False})
+
+
+@decorators.api_view(["POST"])
+@decorators.permission_classes([permissions.IsAuthenticated])
+@decorators.authentication_classes([CookieJWTAuthentication])
+def logout_view(request):
+    response = Response(
+        {"message": "Logout realizado com sucesso"}, status=status.HTTP_200_OK
+    )
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+    return response
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -40,33 +84,6 @@ class ContentTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ContentTypeSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [CookieJWTAuthentication]
-
-
-@decorators.api_view(["GET"])
-@decorators.permission_classes([permissions.IsAuthenticated])
-@decorators.authentication_classes([CookieJWTAuthentication])
-def get_current_user(request):
-    user = request.user
-    return response.Response({"id": user.id})
-
-
-@decorators.api_view(["POST"])
-@decorators.permission_classes([permissions.IsAuthenticated])
-@decorators.authentication_classes([CookieJWTAuthentication])
-def check_password(request, user_id):
-    """
-    Verifica se a senha fornecida é correta para o usuário atual.
-    """
-    password = request.data.get("password")
-    if not password:
-        return response.Response(
-            {"error": "Senha necessária."}, status=status.HTTP_400_BAD_REQUEST
-        )
-    user = request.user  # Já autenticado
-    if user.check_password(password):  # Método nativo do modelo User
-        return response.Response({"valid": True})
-    else:
-        return response.Response({"valid": False})
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -102,6 +119,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
+        print(request.data)
         refresh_token = request.COOKIES.get("refresh_token")
         if refresh_token:
             request.data["refresh"] = refresh_token
@@ -129,11 +147,26 @@ class CustomTokenRefreshView(TokenRefreshView):
             return response
 
 
-@decorators.api_view(["POST"])
-def logout_view(request):
-    response = Response(
-        {"message": "Logout realizado com sucesso"}, status=status.HTTP_200_OK
-    )
-    response.delete_cookie("access_token")
-    response.delete_cookie("refresh_token")
-    return response
+class CustomRefreshTokenVerifyView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Obtém o Refresh Token diretamente dos cookies
+        refresh_token = request.COOKIES.get("refresh_token")
+
+        if not refresh_token:
+            return Response(
+                {"error": "Refresh token não encontrado."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Tenta verificar o Refresh Token
+        try:
+            # Cria uma instância do RefreshToken para verificar a validade
+            token = RefreshToken(refresh_token)
+            return Response(
+                {"message": "Refresh Token é válido"}, status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Refresh Token inválido: {str(e)}"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
