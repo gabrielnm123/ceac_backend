@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, User, Permission
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import permissions, viewsets, status, decorators, response
+from rest_framework import permissions, viewsets, status, decorators
 from .serializers import (
     GroupSerializer,
     UserSerializer,
@@ -24,7 +24,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 @decorators.authentication_classes([CookieJWTAuthentication])
 def get_current_user(request):
     user = request.user
-    return response.Response({"id": user.id})
+    return Response({"id": user.id})
 
 
 @decorators.api_view(["POST"])
@@ -36,14 +36,14 @@ def check_password(request, user_id):
     """
     password = request.data.get("password")
     if not password:
-        return response.Response(
+        return Response(
             {"error": "Senha necessária."}, status=status.HTTP_400_BAD_REQUEST
         )
     user = request.user  # Já autenticado
     if user.check_password(password):  # Método nativo do modelo User
-        return response.Response({"valid": True})
+        return Response({"valid": True})
     else:
-        return response.Response({"valid": False})
+        return Response({"valid": False})
 
 
 @decorators.api_view(["POST"])
@@ -100,7 +100,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 httponly=True,
                 secure=not settings.DEBUG,
                 samesite="Lax",
-                max_age=5 * 60,  # Deve corresponder ao tempo de vida do access token
+                max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
             )
             res.set_cookie(
                 key="refresh_token",
@@ -108,9 +108,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 httponly=True,
                 secure=not settings.DEBUG,
                 samesite="Lax",
-                max_age=24
-                * 60
-                * 60,  # Deve corresponder ao tempo de vida do refresh token
+                max_age=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
             )
             return res
         else:
@@ -139,7 +137,7 @@ class CustomTokenRefreshView(TokenRefreshView):
                 httponly=True,
                 secure=not settings.DEBUG,
                 samesite="Lax",
-                max_age=5 * 60,  # Deve corresponder ao tempo de vida do access token
+                max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
             )
             return res
         else:
