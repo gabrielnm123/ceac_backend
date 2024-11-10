@@ -139,6 +139,14 @@ class CustomTokenRefreshView(TokenRefreshView):
                 samesite="Lax",
                 max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
             )
+            res.set_cookie(
+                key="refresh_token",
+                value=tokens["refresh"],
+                httponly=True,
+                secure=not settings.DEBUG,
+                samesite="Lax",
+                max_age=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
+            )
             return res
         else:
             return response
