@@ -169,8 +169,8 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Define o tempo de vida do access token
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # Tempo de vida do refresh token
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=1),  # Define o tempo de vida do access token
+    'REFRESH_TOKEN_LIFETIME': timedelta(seconds=10),   # Tempo de vida do refresh token
     'ROTATE_REFRESH_TOKENS': True,                # Renova o refresh token quando o access token é renovado
     'BLACKLIST_AFTER_ROTATION': True,             # Coloca o refresh token antigo na lista negra após a renovação
 }

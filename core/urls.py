@@ -29,7 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/current_user/', get_current_user, name='current_user'),
-    path('api/logout/', logout_view, name='logout'),
+    path('api/token/logout/', logout_view, name='logout'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/refresh/verify/', CustomRefreshTokenVerifyView.as_view(), name='token_refresh'),
