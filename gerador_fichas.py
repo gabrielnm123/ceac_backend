@@ -103,4 +103,4 @@ criar_modulos_capacita()
 for _ in range(150):
     gerar_ficha()
 
-print("150 fichas geradas com sucesso!")
+print('150 fichas geradas com sucesso!')

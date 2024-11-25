@@ -5,6 +5,8 @@ from django.db import models
 class Administrator(models.Model):
     class Meta:
         permissions = [
-            ("operadores", "Operadores"),
-            ("perfis", "Perfis de Acesso"),
+            ('searchUser', 'Buscar Usuário'),
+            ('createUser', 'Criar Usuário'),
+            ('searchPerfil', 'Buscar Perfil'),
+            ('createPerfil', 'Criar Perfil')
         ]

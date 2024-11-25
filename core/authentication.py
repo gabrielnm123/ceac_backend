@@ -5,7 +5,7 @@ from rest_framework.exceptions import AuthenticationFailed
 class CookieJWTAuthentication(JWTAuthentication):
     def authenticate(self, request):
         # Tenta obter o token de acesso do cookie
-        raw_token = request.COOKIES.get("access_token")
+        raw_token = request.COOKIES.get('access_token')
 
         if raw_token is None:
             # Não autentica se não houver token

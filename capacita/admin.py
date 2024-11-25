@@ -34,26 +34,26 @@ class FichaAdmin(admin.ModelAdmin):
                     self.context[field.name] = str(opcao_escolhida)
                 elif field.name == 'cpf':
                     # Formatação padrão para CPF: 123.456.789-10
-                    self.context[field.name] = f"{ficha_element[:3]}.{ficha_element[3:6]}.{ficha_element[6:9]}-{ficha_element[9:]}"
+                    self.context[field.name] = f'{ficha_element[:3]}.{ficha_element[3:6]}.{ficha_element[6:9]}-{ficha_element[9:]}'
                 elif field.name == 'cnpj':
                     # Formatação padrão para CNPJ: 12.345.678/0001-90
-                    self.context[field.name] = f"{ficha_element[:2]}.{ficha_element[2:5]}.{ficha_element[5:8]}/{ficha_element[8:12]}-{ficha_element[12:]}"
+                    self.context[field.name] = f'{ficha_element[:2]}.{ficha_element[2:5]}.{ficha_element[5:8]}/{ficha_element[8:12]}-{ficha_element[12:]}'
                 elif field.name == 'fixo':
                     # Formatação padrão para telefone fixo: (12) 3456-7890
-                    self.context[field.name] = f"({ficha_element[:2]}) {ficha_element[2:6]}-{ficha_element[6:]}"
+                    self.context[field.name] = f'({ficha_element[:2]}) {ficha_element[2:6]}-{ficha_element[6:]}'
                 elif field.name == 'celular':
                     # Formatação padrão para celular: (12) 9 8765-4321
-                    self.context[field.name] = f"({ficha_element[:2]}) {ficha_element[2]} {ficha_element[3:7]}-{ficha_element[7:]}"
+                    self.context[field.name] = f'({ficha_element[:2]}) {ficha_element[2]} {ficha_element[3:7]}-{ficha_element[7:]}'
                 elif field.name == 'cep':
                     # Formatação padrão para CEP: 12345-678
-                    self.context[field.name] = f"{ficha_element[:5]}-{ficha_element[5:]}"
+                    self.context[field.name] = f'{ficha_element[:5]}-{ficha_element[5:]}'
                 else:
                     self.context[field.name] = str(ficha_element) if ficha_element else ''  # Se o campo estiver None, fica vazio
         self.document.render(self.context)
 
     def download_ficha(self, request, queryset):
         if len(queryset) > 1:
-            zip_name = tempfile.mktemp(suffix=".zip")
+            zip_name = tempfile.mktemp(suffix='.zip')
             with zipfile.ZipFile(zip_name, 'w') as zip_file:
                 for ficha in queryset:
                     self.trata_ficha(ficha)
@@ -80,7 +80,7 @@ class FichaAdmin(admin.ModelAdmin):
 
         return response
 
-    download_ficha.short_description = "Baixar ficha(s) selecionado(s)"
+    download_ficha.short_description = 'Baixar ficha(s) selecionado(s)'
 
 class ModulosCapacitaAdmin(admin.ModelAdmin):
     search_fields = ['nome']
