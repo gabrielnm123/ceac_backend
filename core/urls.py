@@ -1,7 +1,17 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenVerifyView, TokenObtainPairView, TokenRefreshView, TokenBlacklistView
-from .views import UserViewSet, GroupViewSet, PermissionViewSet, ContentTypeViewSet, get_current_user, check_password
+from .views import (
+    UserViewSet,
+    GroupViewSet,
+    PermissionViewSet,
+    ContentTypeViewSet,
+    get_current_user,
+    check_password,
+    logout_view,
+    CustomTokenObtainPairView,
+    CustomTokenRefreshView,
+    CustomRefreshTokenVerifyView
+)
 from capacita.views import FichaViewSet, ModulosCapacitaViewSet, download_ficha_view
 from rest_framework import routers
 from django.views.generic import RedirectView
@@ -19,10 +29,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/current_user/', get_current_user, name='current_user'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/token/invalidate/', TokenBlacklistView.as_view(), name='invalidate_token'),
-    path('api/users/<int:user_id>/check-password/', check_password, name='check_password'),
-    path('api/capacita/fichas/<int:ficha_id>/download/', download_ficha_view, name='download_ficha'),
+    path('api/token/logout/', logout_view, name='logout'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/refresh/verify/', CustomRefreshTokenVerifyView.as_view(), name='token_refresh'),
+    path(
+        'api/users/<int:user_id>/check-password/', check_password, name='check_password'
+    ),
+    path(
+        'api/capacita/fichas/<int:ficha_id>/download/',
+        download_ficha_view,
+        name='download_ficha',
+    ),
 ]

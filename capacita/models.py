@@ -3,9 +3,9 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 class ModulosCapacita(models.Model):
-    nome = models.CharField(unique=True, verbose_name="Nome do Módulo")
-    descricao = models.TextField(unique=True, verbose_name="Descrição", blank=True, null=True)
-    disponivel = models.BooleanField(default=True, verbose_name="Disponível para Seleção")
+    nome = models.CharField(unique=True, verbose_name='Nome do Módulo')
+    descricao = models.TextField(unique=True, verbose_name='Descrição', blank=True, null=True)
+    disponivel = models.BooleanField(default=True, verbose_name='Disponível para Seleção')
 
     def __str__(self):
         return self.nome
@@ -142,6 +142,6 @@ class Ficha(models.Model):
 
     class Meta:
         permissions = [
-            ("buscarFicha", "Buscar Ficha"),
-            ("criarFicha", "Criar Ficha"),
+            ('searchFicha', 'Buscar Ficha'),
+            ('createFicha', 'Criar Ficha'),
         ]
