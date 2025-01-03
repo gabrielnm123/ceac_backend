@@ -144,4 +144,6 @@ class Ficha(models.Model):
         permissions = [
             ('searchFicha', 'Buscar Ficha'),
             ('createFicha', 'Criar Ficha'),
+            ('editFicha', 'Editar Ficha'),
+            ('deleteFicha', 'Deletar Ficha'),
         ]
