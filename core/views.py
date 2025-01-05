@@ -47,8 +47,6 @@ def check_password(request, user_id):
 
 
 @decorators.api_view(['POST'])
-@decorators.permission_classes([permissions.IsAuthenticated])
-@decorators.authentication_classes([CookieJWTAuthentication])
 def logout_view(request):
     response = Response(
         {'message': 'Logout realizado com sucesso'}, status=status.HTTP_200_OK
