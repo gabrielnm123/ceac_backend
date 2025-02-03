@@ -6,14 +6,10 @@ class Administrator(models.Model):
     class Meta:
         permissions = [
             # Usuário
-            ('searchUser', 'Buscar Usuário'),
+            ('manageUser', 'Gerenciar Usuário'),
             ('createUser', 'Criar Usuário'),
-            ('editUser', 'Editar Usuário'),
-            ('deleteUser', 'Deletar Usuário'),
 
             # Perfil
-            ('searchPerfil', 'Buscar Perfil'),
+            ('managePerfil', 'Gerenciar Perfil'),
             ('createPerfil', 'Criar Perfil'),
-            ('editPerfil', 'Editar Perfil'),
-            ('deletePerfil', 'Deletar Perfil'),
         ]
