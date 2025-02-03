@@ -5,11 +5,11 @@ from django.db import models
 class Administrator(models.Model):
     class Meta:
         permissions = [
-            # Usuário
-            ('manageUser', 'Gerenciar Usuário'),
-            ('createUser', 'Criar Usuário'),
+            # Operadores
+            ('manageOperator', 'Gerenciar Operadores'),
+            ('createOperator', 'Criar Operador'),
 
             # Perfil
-            ('managePerfil', 'Gerenciar Perfil'),
+            ('managePerfil', 'Gerenciar Perfis'),
             ('createPerfil', 'Criar Perfil'),
         ]

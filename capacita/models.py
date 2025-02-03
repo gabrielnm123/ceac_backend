@@ -142,6 +142,6 @@ class Ficha(models.Model):
 
     class Meta:
         permissions = [
-            ('manageFicha', 'Gerenciar Ficha'),
+            ('manageFicha', 'Gerenciar Fichas'),
             ('createFicha', 'Criar Ficha'),
         ]
